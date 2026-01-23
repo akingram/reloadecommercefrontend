@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://multivendor-ecommerce-backend-xh7z.onrender.com/api";
+const API_URL = "https://reloadecommercebackend.onrender.com/api";
 
 // Create axios instance with credentials
 export const api = axios.create({
@@ -54,7 +54,7 @@ export const sellerLogin = async (sellerData) => {
 export const postProduct = async () => {
   try {
     const response = await api.post(
-      "https://multivendor-ecommerce-backend-xh7z.onrender.com/api/product-upload",
+      "https://reloadecommercebackend.onrender.com/api/product-upload",
       payload,
       {
         headers: {

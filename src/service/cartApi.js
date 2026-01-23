@@ -2,7 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import axios from "axios";
 
-const API_URL = "https://multivendor-ecommerce-backend-xh7z.onrender.com/api";
+const API_URL = "https://reloadecommercebackend.onrender.com/api";
 
 // Create axios instance
 export const api = axios.create({

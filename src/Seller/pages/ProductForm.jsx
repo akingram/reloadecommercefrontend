@@ -118,7 +118,7 @@ const ProductForm = () => {
       });
 
       const response = await axios.post(
-        "https://multivendor-ecommerce-backend-xh7z.onrender.com/api/product-upload",
+        "https://reloadecommercebackend.onrender.com/api/product-upload",
         payload,
         {
           headers: {
