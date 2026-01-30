@@ -12,7 +12,7 @@ const Footer = () => {
           >
             <ShoppingBag color="white" />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              FashionHub
+              Elvana Naturals
             </span>
           </a>
           <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-white sm:mb-0 dark:text-white">
@@ -42,7 +42,7 @@ const Footer = () => {
         <span className="block text-sm text-white sm:text-center dark:text-white">
           © 2025{" "}
           <a href="https://flowbite.com/" className="hover:underline">
-            FashionHub™
+            Elvana Natural™
           </a>
           . All Rights Reserved.
         </span>

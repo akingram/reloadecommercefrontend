@@ -113,12 +113,12 @@ const LoginSeller = () => {
 
         <div className="flex items-center justify-center gap-4">
           <p className="mt-3 text-sm text-gray-500">
-            Want to be seller?{" "}
+            login as seller?{" "}
             <Link
-              to="/seller-signup"
+              to="/seller-login"
               className=" text-[#36d7b7] hover:underline"
             >
-              Signup
+              Login
             </Link>
           </p>
           <p className="mt-3 text-sm text-gray-500">

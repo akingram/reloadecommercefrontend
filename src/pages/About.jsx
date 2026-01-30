@@ -1,61 +1,65 @@
-import { Users, Award, Truck, Shield } from 'lucide-react';
+import { Users, Award, Truck, Shield, Heart, Leaf, Brain, Droplets } from 'lucide-react';
 
 const About = () => {
   const features = [
     {
-      icon: Users,
-      title: "Community Driven",
-      description: "Connect buyers and sellers in a vibrant fashion marketplace"
+      icon: Leaf,
+      title: "100% Natural Ingredients",
+      description: "Pure, plant-based supplements with no artificial additives or fillers"
     },
     {
       icon: Award,
-      title: "Quality Assured",
-      description: "Every product is carefully vetted for authenticity and quality"
+      title: "Lab Tested & Certified",
+      description: "Every product undergoes third-party testing for purity and potency"
     },
     {
       icon: Truck,
-      title: "Fast Delivery",
-      description: "Free shipping on orders over $50 with tracking included"
+      title: "Fast & Free Shipping",
+      description: "Free delivery on orders over ₦50,000 with nationwide coverage"
     },
     {
       icon: Shield,
-      title: "Secure Shopping",
-      description: "Your data and transactions are protected with enterprise security"
+      title: "Quality Guarantee",
+      description: "Your health and satisfaction are protected with our wellness guarantee"
     }
   ];
 
   const team = [
     {
-      name: "Sarah Johnson",
-      role: "CEO & Founder",
+      name: "Dr. Sarah Johnson",
+      role: "Chief Medical Officer & Founder",
       image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
-      bio: "Former fashion buyer with 10+ years in retail"
+      bio: "Board-certified nutritionist with 15+ years in natural medicine"
     },
     {
-      name: "Michael Chen",
-      role: "Head of Technology",
+      name: "Dr. Michael Chen",
+      role: "Head of Research & Development",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      bio: "Tech veteran passionate about e-commerce innovation"
+      bio: "Pharmaceutical scientist specializing in natural supplement formulations"
     },
     {
       name: "Emma Davis",
-      role: "Creative Director",
+      role: "Wellness Director",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
-      bio: "Fashion designer turned digital creative strategist"
+      bio: "Holistic health practitioner and certified nutrition specialist"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white">
       {/* Hero Section */}
-      <section className="bg-gradient-primary text-white py-20">
+      <section className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-20">
         <div className="container mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6">
+            <Heart className="h-5 w-5" />
+            <span className="text-sm font-medium">Wellness First Since 2018</span>
+          </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            About FashionHub
+            About Elvana Naturals
           </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
-            We're revolutionizing fashion retail by connecting independent sellers 
-            with style-conscious buyers in one beautiful marketplace.
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-emerald-100">
+            We're revolutionizing natural wellness by providing premium supplements 
+            that bridge the gap between nature and optimal health.
           </p>
         </div>
       </section>
@@ -65,47 +69,56 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-                FashionHub was born from the belief that fashion should be accessible, 
-                diverse, and sustainable. We empower independent sellers and boutique 
-                brands to reach customers worldwide while providing shoppers with 
-                unique, curated fashion finds.
+              <div className="inline-flex items-center gap-2 text-emerald-600 mb-4">
+                <Leaf className="h-5 w-5" />
+                <span className="text-sm font-medium">Our Story</span>
+              </div>
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">Our Wellness Mission</h2>
+              <p className="text-lg text-gray-600 leading-relaxed mb-4">
+                Elvana Naturals was founded on the belief that optimal health comes from nature. 
+                We combine traditional herbal wisdom with modern scientific research to create 
+                supplements that genuinely support your body's natural healing processes.
               </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Since our launch in 2020, we've facilitated over 100,000 transactions 
-                and helped 5,000+ sellers build their fashion businesses.
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Since our founding in 2018, we've helped over 50,000 customers achieve their 
+                health goals and partnered with 1,000+ wellness practitioners nationwide.
               </p>
             </div>
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=400&fit=crop"
-                alt="Fashion store"
-                className="rounded-lg shadow-lg w-full"
+                src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&h=400&fit=crop"
+                alt="Natural supplements and herbs"
+                className="rounded-2xl shadow-xl w-full"
               />
+              <div className="absolute -bottom-6 -right-6 bg-emerald-100 p-4 rounded-xl shadow-lg">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-emerald-700">5,000+</div>
+                  <div className="text-sm text-emerald-600">Wellness Transformations</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-muted/30">
+      <section className="py-16 bg-gradient-to-b from-teal-50 to-emerald-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose FashionHub?</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              We're more than just a marketplace - we're a community dedicated to making fashion better for everyone.
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">Why Choose Elvana Naturals?</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              We're committed to providing the purest, most effective natural supplements available.
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="text-center p-6 rounded-lg bg-card border border-border">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="h-8 w-8 text-primary" />
+              <div key={index} className="text-center p-8 rounded-2xl bg-white border border-emerald-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <feature.icon className="h-8 w-8 text-emerald-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <h3 className="text-xl font-bold mb-3 text-gray-900">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -116,23 +129,32 @@ const About = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Meet Our Team</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Passionate professionals working to make fashion more accessible and sustainable.
+            <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full mb-4">
+              <Users className="h-4 w-4" />
+              <span className="text-sm font-medium">Our Wellness Experts</span>
+            </div>
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">Meet Our Medical Team</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Board-certified professionals dedicated to your health and wellness journey.
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {team.map((member, index) => (
-              <div key={index} className="text-center">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
-                <p className="text-primary font-medium mb-3">{member.role}</p>
-                <p className="text-muted-foreground text-sm">{member.bio}</p>
+              <div key={index} className="text-center group">
+                <div className="relative mb-6">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-lg group-hover:border-emerald-100 transition-colors duration-300"
+                  />
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                    {member.role.includes('Dr.') ? 'MD' : 'Certified'}
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold mb-1 text-gray-900">{member.name}</h3>
+                <p className="text-emerald-600 font-medium mb-3">{member.role}</p>
+                <p className="text-gray-600 text-sm">{member.bio}</p>
               </div>
             ))}
           </div>
@@ -140,27 +162,74 @@ const About = () => {
       </section>
 
       {/* Values Section */}
-      <section className="py-16 bg-gradient-secondary">
+      <section className="py-16 bg-gradient-to-r from-emerald-700 to-teal-700">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8 text-white">Our Values</h2>
+          <h2 className="text-3xl font-bold mb-8 text-white">Our Core Values</h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-white">
-              <h3 className="text-xl font-semibold mb-3">Sustainability</h3>
+            <div className="text-white p-6 bg-white/10 backdrop-blur-sm rounded-2xl">
+              <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Leaf className="h-6 w-6 text-emerald-300" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Purity First</h3>
               <p className="text-white/90">
-                Supporting circular fashion and eco-conscious brands that care about our planet's future.
+                We never compromise on ingredient quality. Every product is 100% natural, 
+                non-GMO, and free from artificial additives.
               </p>
             </div>
-            <div className="text-white">
-              <h3 className="text-xl font-semibold mb-3">Diversity</h3>
+            <div className="text-white p-6 bg-white/10 backdrop-blur-sm rounded-2xl">
+              <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Brain className="h-6 w-6 text-emerald-300" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Science-Backed</h3>
               <p className="text-white/90">
-                Celebrating all styles, sizes, and backgrounds in our inclusive fashion community.
+                Combining traditional herbal wisdom with modern scientific research 
+                for maximum effectiveness and safety.
               </p>
             </div>
-            <div className="text-white">
-              <h3 className="text-xl font-semibold mb-3">Innovation</h3>
+            <div className="text-white p-6 bg-white/10 backdrop-blur-sm rounded-2xl">
+              <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Heart className="h-6 w-6 text-emerald-300" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Holistic Wellness</h3>
               <p className="text-white/90">
-                Continuously improving the shopping experience through technology and user feedback.
+                Supporting complete mind-body health through natural solutions 
+                that work with your body's innate healing abilities.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Certification Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4 text-gray-900">Our Certifications</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Independent verification of our commitment to quality and safety
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-8 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Shield className="h-10 w-10 text-emerald-600" />
+              </div>
+              <p className="font-semibold text-gray-800">GMP Certified</p>
+              <p className="text-sm text-gray-600">Good Manufacturing Practice</p>
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Leaf className="h-10 w-10 text-emerald-600" />
+              </div>
+              <p className="font-semibold text-gray-800">Organic Certified</p>
+              <p className="text-sm text-gray-600">USDA & EU Standards</p>
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Award className="h-10 w-10 text-emerald-600" />
+              </div>
+              <p className="font-semibold text-gray-800">Third-Party Tested</p>
+              <p className="text-sm text-gray-600">Independent Lab Verified</p>
             </div>
           </div>
         </div>
@@ -169,25 +238,28 @@ const About = () => {
       {/* CTA Section */}
       <section className="py-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Join Our Community?</h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Whether you're looking to shop unique fashion or sell your creations, 
-            FashionHub is the perfect place to start your journey.
+          <h2 className="text-3xl font-bold mb-4 text-gray-900">Ready to Transform Your Wellness?</h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Join thousands of satisfied customers who have discovered the power of natural supplements.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href="/shop" 
-              className="inline-flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-8 rounded-md text-sm font-medium transition-colors"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-500 hover:to-teal-500 h-12 px-8 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105"
             >
-              Start Shopping
+              Shop Supplements
             </a>
             <a 
-              href="/seller" 
-              className="inline-flex items-center justify-center border border-input bg-background hover:bg-accent hover:text-accent-foreground h-12 px-8 rounded-md text-sm font-medium transition-colors"
+              href="/consultation" 
+              className="inline-flex items-center justify-center border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white h-12 px-8 rounded-full text-sm font-medium transition-colors"
             >
-              Become a Seller
+              Free Wellness Consultation
             </a>
           </div>
+          <p className="text-gray-500 text-sm mt-6 max-w-lg mx-auto">
+            Have questions about which supplements are right for you? 
+            Our wellness experts are here to help.
+          </p>
         </div>
       </section>
     </div>

@@ -47,7 +47,7 @@ export const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
             Dashboard
           </h1>
           <h1 className="text-xl font-semibold text-gray-800 md:hidden">
-            <Link to="/">FashionHub</Link>
+            <Link to="/">Elvana Naturals</Link>
           </h1>
         </div>
         <div className="flex items-center ml-4 md:ml-6">

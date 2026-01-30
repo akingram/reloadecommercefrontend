@@ -51,10 +51,10 @@ const Header = () => {
             className="flex items-center space-x-3 group"
           >
             <div className="w-10 h-10 bg-gradient-to-br from-[#36d7b7] to-[#2ebfa1] rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-              <span className="text-white font-bold text-lg">FH</span>
+              <span className="text-white font-bold text-lg">EN</span>
             </div>
             <span className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-gray-800 to-[#36d7b7] bg-clip-text text-transparent">
-              FashionHub
+              Elvana Naturals
             </span>
           </Link>
       </div>

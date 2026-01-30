@@ -129,12 +129,12 @@ const Signup = () => {
             </Link>
           </p>
           <p className="mt-3 text-sm text-gray-500">
-            Become a seller?{" "}
+            Login as a seller?{" "}
             <Link
-              to="/seller-signup"
+              to="/seller-login"
               className=" text-[#36d7b7] hover:underline"
             >
-              Signup
+              Login
             </Link>
           </p>
         </div>

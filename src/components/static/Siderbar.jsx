@@ -58,7 +58,7 @@ export const Siderbar = ({ sidebarOpen, setSidebarOpen }) => {
         {/* Header - removed close button */}
         <div className="flex items-center justify-center h-16 px-4 border-b border-gray-200">
           <Link to="/" onClick={handleLinkClick}>
-            <h1 className="text-xl font-bold text-gray-800">FashionHub™</h1>
+            <h1 className="text-xl font-bold text-gray-800">Elvana Naturals™</h1>
           </Link>
         </div>
 
