@@ -18,11 +18,11 @@ const ProductForm = () => {
   const token = useSelector((state) => state.seller.token || null);
   const navigate = useNavigate();
   const categories = [
-    "Clothing",
-    "Footwear",
-    "Bags & Accessories",
-    "Undergarments",
-    "Kids & Baby Fashion",
+    "Reload Products for Men",
+    "Reload Products for Women",
+    "Reload Products for Kids",
+    "Reload Specialty",
+    "Reload Platinum Plus",
   ];
 
   const handleInputChange = (e) => {
@@ -344,7 +344,7 @@ const ProductForm = () => {
                   Price *
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2 text-gray-500">$</span>
+                  <span className="absolute left-3 top-2 text-gray-500">GHC</span>
                   <input
                     type="number"
                     id="price"
