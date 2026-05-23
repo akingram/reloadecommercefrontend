@@ -344,7 +344,7 @@ const ProductForm = () => {
                   Price *
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2 text-gray-500">GHC</span>
+                  <span className="absolute left-3 top-2 text-gray-500">₵</span>
                   <input
                     type="number"
                     id="price"
