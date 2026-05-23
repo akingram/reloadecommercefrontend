@@ -38,7 +38,7 @@ const Checkout = () => {
       lastName: currentUser?.lastName || "",
       email: currentUser?.email || "",
       address: "",
-      country: "NG", // Default to Nigeria
+      country: "GH", // Default to Ghana
       state: "",
       city: "",
       phone: currentUser?.phone || "",
@@ -64,9 +64,9 @@ const Checkout = () => {
     0
   );
 
-  // Format price in NGN
+  // Format price in GHC
   const formatPrice = (price) =>
-    new Intl.NumberFormat("en-NG", {
+    new Intl.NumberFormat("en-GH", {
       style: "decimal",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
@@ -520,7 +520,7 @@ const Checkout = () => {
                         Processing...
                       </>
                     ) : (
-                      `Place Order - ₦${formatPrice(totalPrice)}`
+                      `Place Order - ₵${formatPrice(totalPrice)}`
                     )}
                   </button>
                 </div>

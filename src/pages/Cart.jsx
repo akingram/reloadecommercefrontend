@@ -34,9 +34,9 @@ const Cart = () => {
     }
   }, [cartItems.length, isAuthenticated, navigate]);
 
-  // Format price in NGN
+  // Format price in GH₵
   const formatPrice = (price) =>
-    new Intl.NumberFormat("en-NG", {
+    new Intl.NumberFormat("en-GH", {
       style: "decimal",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
