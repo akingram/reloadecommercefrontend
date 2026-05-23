@@ -247,10 +247,10 @@ const ProductDetails = () => {
             <p className="text-muted-foreground mb-4">by {product.seller.storeName}</p>
 
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl font-bold text-primary">₦{formattedPrice}</span>
+              <span className="text-3xl font-bold text-primary">₵{formattedPrice}</span>
               {formattedOriginalPrice && (
                 <span className="text-xl text-muted-foreground line-through">
-                  ₦{formattedOriginalPrice}
+                 ₵{formattedOriginalPrice}
                 </span>
               )}
             </div>
