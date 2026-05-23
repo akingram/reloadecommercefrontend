@@ -304,7 +304,7 @@ const ProductList = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm font-medium text-foreground">
-                        ₦
+                        ghc
                         {new Intl.NumberFormat("en-NG", {
                           style: "decimal",
                           minimumFractionDigits: 0,
