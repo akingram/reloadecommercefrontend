@@ -306,7 +306,7 @@ const Dashboard = () => {
                           <span className="font-semibold">{product.totalSold}</span> units
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm font-semibold text-emerald-700">
-                          ₦{formatPrice(product.totalRevenue)}
+                         ₵{formatPrice(product.totalRevenue)}
                         </td>
                       </tr>
                     ))}

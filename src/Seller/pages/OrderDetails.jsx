@@ -201,7 +201,7 @@ const OrderDetails = () => {
                       Your Earnings:
                     </span>
                     <span className="text-xl font-bold text-[#36d7b7]">
-                      ₦{formatPrice(totalSellerAmount)}
+                      ₵{formatPrice(totalSellerAmount)}
                     </span>
                   </div>
                   {order.sellerPaidAt ? (
