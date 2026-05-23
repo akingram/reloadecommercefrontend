@@ -90,7 +90,7 @@ const PaymentVerification = () => {
             {order && (
               <div className="bg-gray-50 p-4 rounded-md text-left">
                 <p className="text-sm">Order ID: {order._id}</p>
-                <p className="text-sm">Amount: ₦{order.totalAmount}</p>
+                <p className="text-sm">Amount: ₵{order.totalAmount}</p>
               </div>
             )}
           </>

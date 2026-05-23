@@ -77,7 +77,7 @@ const OrderConfirmation = () => {
                 
                 <div className="flex justify-between">
                   <span className="text-gray-600">Total Amount:</span>
-                  <span className="font-medium">₦{formatPrice(orderTotal)}</span>
+                  <span className="font-medium">₵{formatPrice(orderTotal)}</span>
                 </div>
                 
                 <div className="flex justify-between">
@@ -167,7 +167,7 @@ const OrderConfirmation = () => {
                     {/* Item Total */}
                     <div className="text-right">
                       <p className="font-semibold text-gray-900">
-                        ₦{formatPrice(item.price * item.quantity)}
+                        ₵{formatPrice(item.price * item.quantity)}
                       </p>
                     </div>
                   </div>
@@ -177,7 +177,7 @@ const OrderConfirmation = () => {
                 <div className="flex justify-between items-center  pt-4">
                   <span className="text-lg font-semibold">Total:</span>
                   <span className="text-lg font-bold text-[#36d7b7]">
-                    ₦{formatPrice(orderTotal)}
+                    ₵{formatPrice(orderTotal)}
                   </span>
                 </div>
               </div>
