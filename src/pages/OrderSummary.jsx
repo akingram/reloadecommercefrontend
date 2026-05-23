@@ -69,7 +69,7 @@ const OrderSummary = ({
               </p>
               <div className="flex justify-between items-center mt-1">
                 <span className="text-sm font-semibold">
-                  ₦{formatPrice(item.price)}
+                  ₵{formatPrice(item.price)}
                 </span>
                 <span className="text-sm text-muted-foreground">
                   Qty: {item.quantity || 1}
@@ -84,7 +84,7 @@ const OrderSummary = ({
       <div className="space-y-4">
         <div className="flex justify-between">
           <span className="text-muted-foreground">Subtotal</span>
-          <span>₦{formatPrice(totalPrice)}</span>
+          <span>₵{formatPrice(totalPrice)}</span>
         </div>
 
         <div className="flex justify-between">
@@ -96,7 +96,7 @@ const OrderSummary = ({
           <div className="flex justify-between">
             <span className="text-muted-foreground">Discount</span>
             <span className="text-green-600">
-              -₦{formatPrice(totalPrice * 0.1)}
+              -₵{formatPrice(totalPrice * 0.1)}
             </span>
           </div>
         )}
@@ -105,14 +105,14 @@ const OrderSummary = ({
           <div className="flex justify-between font-semibold text-lg">
             <span>Total</span>
             <span>
-              ₦
+              ₵
               {formatPrice(totalPrice > 100000 ? totalPrice * 0.9 : totalPrice)}
             </span>
           </div>
 
           {totalPrice > 100000 && (
             <p className="text-sm text-green-600 mt-1">
-              You saved ₦{formatPrice(totalPrice * 0.1)}! (10% discount)
+              You saved ₵{formatPrice(totalPrice * 0.1)}! (10% discount)
             </p>
           )}
         </div>
