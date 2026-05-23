@@ -18,11 +18,11 @@ const ProductForm = () => {
   const token = useSelector((state) => state.seller.token || null);
   const navigate = useNavigate();
   const categories = [
-    "Reload Products for Men",
-    "Reload Products for Women",
-    "Reload Products for Kids",
-    "Reload Specialty",
-    "Reload Platinum Plus",
+    "reload Products for Men",
+    "reload Products for Women",
+    "reload Products for Kids",
+    "reload Specialty",
+    "reload Platinum Plus",
   ];
 
   const handleInputChange = (e) => {
