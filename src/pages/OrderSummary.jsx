@@ -16,7 +16,7 @@ const OrderSummary = ({
 
   // Format price in NGN
   const formatPrice = (price) =>
-    new Intl.NumberFormat("en-NG", {
+    new Intl.NumberFormat("en-Gh", {
       style: "decimal",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
