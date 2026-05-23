@@ -68,7 +68,7 @@ const Home = () => {
     {
       icon: Truck,
       title: "Fast Delivery",
-      description: "Free shipping on orders over ₦50,000",
+      description: "Free shipping on orders over ₵50,000",
       color: "from-amber-500 to-orange-400",
       bgColor: "bg-amber-50",
     },
@@ -421,7 +421,7 @@ const Home = () => {
                 <div className="space-y-4 mb-8">
                   {[
                     "Up to 40% off on immune support supplements",
-                    "Free shipping on orders over ₦50,000",
+                    "Free shipping on orders over ₵50,000",
                     "Extra 15% off for subscription orders",
                     "Free wellness guide with every purchase"
                   ].map((item, i) => (
@@ -634,7 +634,7 @@ const Home = () => {
                   ].map((social, i) => (
                     <a
                       key={i}
-                      href="₵"
+                      href="#"
                       className="group relative w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-gray-600 hover:bg-emerald-100 transition-all duration-300 hover:-translate-y-1"
                     >
                       <social.icon className="h-5 w-5" />

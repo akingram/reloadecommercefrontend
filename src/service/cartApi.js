@@ -138,18 +138,29 @@ export const createOrder = async (orderData) => {
 };
 
 // service/cartApi.js
-export const verifyPayment = async (reference, orderId) => {
+// export const verifyPayment = async (reference, orderId) => {
+//   try {
+//     const response = await api.get(
+//       `/verify-payment-handler?reference=${encodeURIComponent(reference)}&orderId=${encodeURIComponent(orderId)}`
+//     )
+//     return response.data;
+//   } catch (error) {
+//     console.error('Verify payment error:', error.response?.data || error.message);
+//     throw new Error(error.response?.data?.message || 'Failed to verify payment');
+//   }
+// };
+
+export const verifyPayment = async (transaction_id, orderId) => {
   try {
     const response = await api.get(
-      `/verify-payment-handler?reference=${encodeURIComponent(reference)}&orderId=${encodeURIComponent(orderId)}`
-    )
+      `/verify-payment-handler?transaction_id=${encodeURIComponent(transaction_id)}&orderId=${encodeURIComponent(orderId)}`
+    );
     return response.data;
   } catch (error) {
     console.error('Verify payment error:', error.response?.data || error.message);
     throw new Error(error.response?.data?.message || 'Failed to verify payment');
   }
 };
-
 // Get user's orders
 export const getOrders = async () => {
   try {
