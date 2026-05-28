@@ -45,7 +45,7 @@ const ProductCard = ({ product, viewMode = "grid" }) => {
   }).format(Math.round(product.price || 0));
 
   const formattedOriginalPrice = product.originalPrice
-    ? new Intl.NumberFormat("en-NG", {
+    ? new Intl.NumberFormat("en-GH", {
         style: "decimal",
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
@@ -146,7 +146,7 @@ const ProductCard = ({ product, viewMode = "grid" }) => {
             }`}
           >
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-lg">₦{formattedPrice}</span>
+              <span className="font-semibold text-lg">₵{formattedPrice}</span>
               {formattedOriginalPrice && (
                 <span className="text-sm text-muted-foreground line-through">
                   ₦{formattedOriginalPrice}

@@ -17,11 +17,11 @@ import {
 } from "../../service/userApi";
 
 const categories = [
-  "Clothing",
-  "Footwear",
-  "Bags & Accessories",
-  "Undergarments",
-  "Kids & Baby Fashion",
+ "reload Products for Men",
+    "reload Products for Women",
+    "reload Products for Kids",
+    "reload Specialty",
+    "reload Platinum Plus",
 ];
 
 const ProductList = () => {
@@ -305,7 +305,7 @@ const ProductList = () => {
                       </td>
                       <td className="px-6 py-4 text-sm font-medium text-foreground">
                         ₵
-                        {new Intl.NumberFormat("en-NG", {
+                        {new Intl.NumberFormat("en-GH", {
                           style: "decimal",
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0,

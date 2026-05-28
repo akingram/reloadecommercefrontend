@@ -312,6 +312,7 @@ const Home = () => {
             </Link>
           </div>
         </div>
+        
       </header>
 
       {/* ── Hero Section: Sidebar + Banner + Right Panel ── */}
