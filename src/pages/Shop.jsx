@@ -13,13 +13,10 @@ const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const categories = [
     "All",
-    "Multivitamins",
-    "Immune Support",
-    "Energy Boosters",
-    "Digestive Health",
-    "Sleep & Relaxation",
-    "Joint Support",
-    "Weight Management",
+    "reload Products for Women",
+    "reload Products for Kids",
+    "reload Specialty",
+    "reload Platinum Plus",
   ];
 
   useEffect(() => {
@@ -136,19 +133,21 @@ const Shop = () => {
   // Function to get icon for each category
   const getCategoryIcon = (category) => {
     switch(category.toLowerCase()) {
-      case 'multivitamins':
+      case 'reload Products for Women"':
         return <Pill className="h-4 w-4 mr-1" />;
-      case 'immune support':
+      case 'reload Immune Support':
         return <Heart className="h-4 w-4 mr-1" />;
-      case 'energy boosters':
+      case 'reload Specialty':
         return <Zap className="h-4 w-4 mr-1" />;
-      case 'sleep & relaxation':
+      case 'reload Platinum Plus':
         return <Moon className="h-4 w-4 mr-1" />;
       case 'brain function':
       case 'brain support':
         return <Brain className="h-4 w-4 mr-1" />;
       default:
         return <Leaf className="h-4 w-4 mr-1" />;
+
+      
     }
   };
 

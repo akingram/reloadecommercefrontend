@@ -22,6 +22,13 @@ import {
   Zap,
   Pill,
   Droplets,
+  Search,
+  ShoppingCart,
+  User,
+  ChevronDown,
+  ChevronRight,
+  Phone,
+  Bell,
 } from "lucide-react";
 import heroImage from "../assets/images/homebg.jpg";
 import { Link } from "react-router-dom";
@@ -47,6 +54,10 @@ const Home = () => {
     categories: true,
     inspiration: true,
   });
+  const [flashSeconds, setFlashSeconds] = useState(8 * 3600 + 5 * 60 + 32);
+  const [bannerIndex, setBannerIndex] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const seller = useSelector((state) => state.seller?.seller || null);
   const dashboardLink = seller?.seller?._id ? "/seller" : "/seller-login";
 
@@ -95,11 +106,59 @@ const Home = () => {
       id: "3",
       name: "Maria Garcia",
       role: "Wellness Advocate",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w-200&h=200&fit=crop&crop=face",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face",
       rating: 5,
       comment: "After 6 months of daily use, my energy levels and overall wellness improved dramatically.",
     },
   ];
+
+  const navCategories = [
+    { name: "reload Products for Men", icon: "🛒" },
+    { name: "reload Products for Women", icon: "📱" },
+    { name: "reload Products for Kids", icon: "💊" },
+    { name:"reload Specialty", icon: "🏠" },
+    { name: "reload Platinum Plus", icon: "🔌" },
+    // { name: "Electronics", icon: "💻" },
+    // { name: "Computing", icon: "🖥️" },
+    // { name: "Fashion", icon: "👗" },
+    // { name: "Sporting Goods", icon: "⚽" },
+    // { name: "Baby Products", icon: "🍼" },
+    // { name: "Gaming", icon: "🎮" },
+    { name: "Other categories", icon: "•••" },
+  ];
+
+  
+    
+    
+    
+    
+
+  const quickLinks = [
+    { label: "Anniversary Sale", icon: "🎉", href: "/shop?promo=anniversary" },
+    { label: "Send Packages Securely", icon: "📦", href: "/delivery" },
+    { label: "Call to Order", icon: "📞", href: "tel:0302740642" },
+    { label: "Donkomi Sales", icon: "🔥", href: "/shop?sale=donkomi" },
+    { label: "Recommended For You", icon: "⭐", href: "/shop?recommended=true" },
+    { label: "Make Extra Cash", icon: "💰", href: "/seller-signup" },
+  ];
+
+  // Flash sale timer
+  useEffect(() => {
+    const id = setInterval(() => {
+      setFlashSeconds((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Banner auto-rotate
+  useEffect(() => {
+    const id = setInterval(() => setBannerIndex((i) => (i + 1) % 3), 5000);
+    return () => clearInterval(id);
+  }, []);
+
+  const h = String(Math.floor(flashSeconds / 3600)).padStart(2, "0");
+  const m = String(Math.floor((flashSeconds % 3600) / 60)).padStart(2, "0");
+  const s = String(flashSeconds % 60).padStart(2, "0");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,12 +195,11 @@ const Home = () => {
         setLoading((prev) => ({ ...prev, collections: false }));
 
         const categoryList = [
-          "Multivitamins",
-          "Immune Support",
-          "Energy Boosters",
-          "Digestive Health",
-          "Sleep & Relaxation",
-          "Joint Support",
+          "reload Products for Men",
+    "reload Products for Women",
+    "reload Products for Kids",
+    "reload Specialty",
+    "reload Platinum Plus",
         ];
         const categoryData = await Promise.all(
           categoryList.map(async (cat) => {
@@ -180,392 +238,500 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50/30 via-white to-emerald-50/20">
-      {/* Hero Section - Enhanced with floating elements */}
-      <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/85 via-teal-900/75 to-emerald-900/85" />
+    <div className="min-h-screen bg-gray-100">
+
+      {/* ── Top announcement bar ── */}
+      <div className="bg-emerald-700 text-white text-xs py-1.5 px-4 flex justify-between items-center">
+        <div className="flex gap-6 items-center">
+          <span className="font-semibold">14 Years with you · Powered by <strong>Hikers</strong></span>
+          <span>SAMSUNG · Icona London</span>
+        </div>
+        <div className="flex gap-6 items-center">
+          <span className="font-bold text-sm">UP TO 70% OFF</span>
+          <span>CALL TO ORDER: <strong>030 274 0642</strong></span>
+          <Link to="/shop" className="text-white font-bold border border-white px-3 py-0.5 rounded text-xs hover:bg-white hover:text-emerald-700 transition-colors">
+            DISCOVER
+          </Link>
+        </div>
+      </div>
+
+      {/* ── Secondary bar ── */}
+      <div className="bg-white border-b border-gray-200 text-xs py-1 px-6 flex justify-between items-center text-gray-500">
+        <div className="flex gap-4 items-center">
+          <Link to={dashboardLink} className="text-emerald-600 font-semibold hover:text-emerald-700 flex items-center gap-1">
+            ⊕ Sell on Elvana
+          </Link>
+        </div>
+        <div className="flex gap-4">
+          <span>ELVANA ○</span>
+          <span>⊙PAY</span>
+          <span>⊙DELIVERY</span>
+        </div>
+      </div>
+
+      {/* ── Main Navbar ── */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-screen-xl mx-auto flex items-center gap-4 px-4 py-3">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-1 flex-shrink-0">
+            <span className="text-2xl font-black text-emerald-600 tracking-tight">ELVANA</span>
+            <Sparkles className="h-5 w-5 text-emerald-500" />
+          </Link>
+
+          {/* Search */}
+          <div className="flex-1 flex relative">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2">
+              <Search className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search products, brands and categories"
+              className="w-full pl-9 pr-4 h-10 border border-gray-300 rounded-l text-sm outline-none focus:border-emerald-500 transition-colors"
+            />
+            <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 rounded-r font-semibold text-sm transition-colors">
+              Search
+            </button>
+          </div>
+
+          {/* Nav icons */}
+          <div className="flex gap-5 items-center flex-shrink-0">
+            <Link to="/account" className="flex flex-col items-center text-gray-600 hover:text-emerald-600 transition-colors text-xs gap-0.5">
+              <User className="h-5 w-5" />
+              <span className="flex items-center gap-0.5">Account <ChevronDown className="h-3 w-3" /></span>
+            </Link>
+            <Link to="/help" className="flex flex-col items-center text-gray-600 hover:text-emerald-600 transition-colors text-xs gap-0.5">
+              <Bell className="h-5 w-5" />
+              <span className="flex items-center gap-0.5">Help <ChevronDown className="h-3 w-3" /></span>
+            </Link>
+            <Link to="/cart" className="flex flex-col items-center text-gray-600 hover:text-emerald-600 transition-colors text-xs gap-0.5 relative">
+              <div className="relative">
+                <ShoppingCart className="h-5 w-5" />
+                <span className="absolute -top-1.5 -right-1.5 bg-emerald-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+              </div>
+              <span>Cart</span>
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* ── Hero Section: Sidebar + Banner + Right Panel ── */}
+      <div className="max-w-screen-xl mx-auto px-4 pt-4 pb-2 grid grid-cols-[220px_1fr_180px] gap-3">
+
+        {/* Left: Category sidebar */}
+        <div className="bg-white rounded shadow-sm overflow-hidden self-start">
+          {navCategories.map((cat, i) => (
+            <Link
+              key={i}
+              to={`/shop?category=${encodeURIComponent(cat.name)}`}
+              className="flex items-center gap-2.5 px-3.5 py-2.5 border-b border-gray-100 text-gray-700 text-sm hover:bg-emerald-50 hover:text-emerald-700 transition-colors last:border-0"
+            >
+              <span className="text-base">{cat.icon}</span>
+              <span>{cat.name}</span>
+            </Link>
+          ))}
         </div>
 
-        {/* Floating decorative elements */}
-        <div className="absolute top-20 left-10 w-16 h-16 bg-emerald-300/20 rounded-full blur-xl" />
-        <div className="absolute bottom-32 right-20 w-24 h-24 bg-teal-400/10 rounded-full blur-xl" />
-        <div className="absolute top-1/3 right-1/4 w-12 h-12 bg-white/10 rounded-full blur-lg" />
-
-        <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-6 py-3 rounded-full mb-8 border border-white/20 hover:bg-white/15 transition-all duration-300 group">
-            <Leaf className="h-5 w-5 group-hover:scale-110 transition-transform" />
-            <span className="text-base font-semibold tracking-wide">Premium Natural Supplements</span>
-            <Sparkles className="h-4 w-4 ml-1 opacity-70" />
+        {/* Center: Hero banner */}
+        <div className="relative rounded overflow-hidden min-h-[360px] cursor-pointer" onClick={() => setBannerIndex((bannerIndex + 1) % 3)}>
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${heroImage})` }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/85 via-teal-900/70 to-emerald-900/80" />
           </div>
-          
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-playfair font-bold mb-6 leading-tight">
-            Elevate Your
-            <span className="block mt-2">
-              <span className="bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-200 bg-clip-text text-transparent">
+
+          <div className="relative z-10 p-10 h-full flex flex-col justify-center text-white">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-semibold mb-5 border border-white/20 w-fit">
+              <Leaf className="h-3.5 w-3.5" />
+              Premium Natural Supplements
+              <Sparkles className="h-3 w-3 opacity-70" />
+            </div>
+
+            <h1 className="text-5xl font-playfair font-bold leading-tight mb-4">
+              Elevate Your
+              <span className="block bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-200 bg-clip-text text-transparent">
                 Wellness Journey
               </span>
+            </h1>
+
+            <p className="text-base font-light mb-6 max-w-md leading-relaxed opacity-90">
+              Scientifically-backed natural supplements for optimal health and vitality
+            </p>
+
+            <div className="flex gap-4 flex-wrap">
+              <Link
+                to="/shop"
+                className="bg-emerald-500 hover:bg-emerald-400 text-white px-7 py-2.5 rounded-full font-semibold text-sm flex items-center gap-2 transition-all hover:shadow-lg hover:shadow-emerald-500/30"
+              >
+                Explore Supplements <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to={dashboardLink}
+                className="bg-transparent text-white border border-white/50 hover:border-white hover:bg-white/10 px-7 py-2.5 rounded-full font-semibold text-sm flex items-center gap-2 transition-all"
+              >
+                Start Selling <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="flex gap-5 mt-8 text-xs text-white/80">
+              <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-emerald-300" /> Certified Quality</span>
+              <span className="flex items-center gap-1.5"><Heart className="h-3.5 w-3.5 text-emerald-300" /> 100% Natural</span>
+              <span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-emerald-300" /> Free Shipping</span>
+              <span className="flex items-center gap-1.5"><Star className="h-3.5 w-3.5 text-emerald-300" /> 5-Star Rated</span>
+            </div>
+          </div>
+
+          {/* Dot indicators */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {[0, 1, 2].map((i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.stopPropagation(); setBannerIndex(i); }}
+                className={`w-2 h-2 rounded-full transition-all ${i === bannerIndex ? "bg-white w-5" : "bg-white/50"}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Right: Quick action cards */}
+        <div className="flex flex-col gap-2">
+          {[
+            { icon: "📞", title: "CALL / WHATSAPP", detail: "0302740642", to: "/contact", bg: "bg-green-50 border-green-100" },
+            { icon: "🏪", title: "SELL ON ELVANA", detail: "Make more money", to: dashboardLink, bg: "bg-blue-50 border-blue-100" },
+            { icon: "📦", title: "TRACK YOUR ORDER", detail: "Stay up to date", to: "/orders", bg: "bg-amber-50 border-amber-100" },
+          ].map((item, i) => (
+            <Link key={i} to={item.to} className={`${item.bg} border rounded p-3 flex items-center gap-2.5 hover:shadow-sm transition-shadow`}>
+              <span className="text-xl">{item.icon}</span>
+              <div>
+                <div className="font-bold text-xs text-gray-800">{item.title}</div>
+                <div className="text-[11px] text-gray-500 mt-0.5">{item.detail}</div>
+              </div>
+            </Link>
+          ))}
+
+          {/* Anniversary promo */}
+          <div className="bg-emerald-600 rounded p-3 text-white text-center">
+            <div className="text-[10px] font-semibold mb-1">ELVANA ✦</div>
+            <div className="text-3xl font-black leading-none">14</div>
+            <div className="text-[11px]">Years with you</div>
+            <div className="text-[10px] opacity-80 mt-0.5">COMING SOON</div>
+            <div className="text-base font-bold mt-1">Hikers</div>
+          </div>
+
+          {/* Seller CTA */}
+          <Link
+            to="/seller-signup"
+            className="bg-emerald-600 hover:bg-emerald-700 rounded p-3 text-white text-center block transition-colors"
+          >
+            <div className="text-[10px] font-semibold mb-1">ELVANA FORCE</div>
+            <div className="text-xl font-black leading-tight">MAKE EXTRA<br />CASH</div>
+            <div className="mt-2 font-bold text-sm">JOIN NOW →</div>
+          </Link>
+        </div>
+      </div>
+
+      {/* ── Quick category pill strip ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="bg-white rounded shadow-sm px-4 py-3 flex gap-2 flex-wrap">
+          {[
+            { name: "reload Products for Men", color: "#FF6B35" },
+            { name: "reload Products for Women", color: "#00A651" },
+            { name:  "reload Products for Kids", color: "#F7941D" },
+            { name:  "reload Specialty", color: "#009FE3" },
+            { name: "reload Platinum Plus", color: "#6B4FBB" },
+            // { name: "Joint Support", color: "#E5111B" },
+         
+    
+   
+   
+          ].map((cat, i) => (
+            <Link
+              key={i}
+              to={`/shop?category=${encodeURIComponent(cat.name.toLowerCase())}`}
+              className="px-4 py-1.5 rounded-full text-xs font-semibold border transition-all hover:text-white"
+              style={{ borderColor: cat.color + "60", color: cat.color, background: cat.color + "15" }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = cat.color; e.currentTarget.style.color = "#fff"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = cat.color + "15"; e.currentTarget.style.color = cat.color; }}
+            >
+              {cat.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Flash Sales ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="bg-white rounded shadow-sm p-4">
+          <div className="flex items-center justify-between bg-red-600 text-white rounded px-4 py-2.5 mb-4">
+            <div className="flex items-center gap-2">
+              <Zap className="h-5 w-5" />
+              <span className="font-bold text-lg">Flash Sales</span>
+            </div>
+            <span className="text-sm">
+              Time Left: <strong>{h}h : {m}m : {s}s</strong>
             </span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl mb-10 font-light max-w-3xl mx-auto leading-relaxed">
-            Discover scientifically-backed natural supplements crafted for optimal health, vitality, and holistic wellness
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Link
-              to="/shop"
-              className="group relative bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white h-14 px-10 rounded-full font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/30 hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-3 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              <span className="text-lg font-semibold relative z-10 tracking-wide">
-                Explore Supplements
-              </span>
-              <ArrowRight className="h-5 w-5 transition-all duration-300 group-hover:translate-x-2 relative z-10" />
-            </Link>
-
-            <Link
-              to={dashboardLink}
-              className="group relative bg-transparent text-white border-2 border-white/40 hover:border-white/80 hover:bg-white/10 h-14 px-10 rounded-full font-semibold transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-3 backdrop-blur-sm"
-            >
-              <span className="text-lg font-semibold tracking-wide">Start Selling</span>
-              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-2" />
+            <Link to="/shop?flash=true" className="text-white font-semibold text-sm border border-white/50 px-3 py-0.5 rounded hover:bg-white/20 transition-colors">
+              See All &rsaquo;
             </Link>
           </div>
-          
-          {/* Trust indicators */}
-          <div className="mt-16 flex flex-wrap justify-center gap-8 text-sm">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-emerald-300" />
-              <span>Certified Quality</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Heart className="h-4 w-4 text-emerald-300" />
-              <span>100% Natural</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Truck className="h-4 w-4 text-emerald-300" />
-              <span>Free Shipping</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 text-emerald-300" />
-              <span>5-Star Rated</span>
-            </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {loading.trending
+              ? Array(6).fill().map((_, i) => <SkeletonProductCard key={i} />)
+              : trendingProducts.slice(0, 6).map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
           </div>
         </div>
-        
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/70 rounded-full mt-2"></div>
-          </div>
-        </div>
-      </section>
+      </div>
 
-      {/* Features Section - Enhanced with gradient cards */}
-      <section className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-emerald-50/20 to-white" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-block px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-sm font-semibold mb-4">
+      {/* ── Quick links strip (Jumia-style tiles) ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+          {quickLinks.map((item, i) => (
+            <Link
+              key={i}
+              to={item.href}
+              className="bg-white rounded shadow-sm flex flex-col items-center justify-center gap-2 py-5 px-2 text-center hover:shadow-md transition-shadow group"
+            >
+              <span className="text-3xl group-hover:scale-110 transition-transform">{item.icon}</span>
+              <span className="text-xs font-semibold text-gray-700 leading-tight">{item.label}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Trending This Month (Best Sellers) ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="bg-white rounded shadow-sm p-4">
+          <div className="flex items-center justify-between border-b-2 border-emerald-500 pb-2 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="h-px w-8 bg-gradient-to-r from-transparent to-emerald-500" />
+              <h2 className="text-lg font-bold text-gray-800">Trending This Month</h2>
+            </div>
+            <Link to="/shop?sort=trending" className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:text-emerald-700">
+              See All <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            {loading.trending
+              ? Array(6).fill().map((_, i) => <SkeletonProductCard key={i} />)
+              : trendingProducts.slice(0, 10).map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+          </div>
+          <div className="text-center mt-4">
+            <Link to="/shop" className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2.5 rounded-full font-semibold text-sm transition-colors">
+              View All Supplements <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Features Section ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="bg-white rounded shadow-sm p-6">
+          <div className="text-center mb-6">
+            <span className="inline-block px-4 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-semibold mb-3">
               Why Choose Us
             </span>
-            <h2 className="text-4xl md:text-5xl font-playfair font-bold mb-6">
-              Premium Wellness Experience
-            </h2>
-            <p className="text-lg text-gray-600">
-              We combine nature's wisdom with scientific research to deliver exceptional supplements
-            </p>
+            <h2 className="text-2xl font-playfair font-bold">Premium Wellness Experience</h2>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {features.map((feature, index) => (
-              <div
-                key={index}
-                className="group relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-8"
-              >
-                {/* Background gradient */}
-                <div className={`absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-500 bg-gradient-to-br ${feature.color}`} />
-                
-                <div className="relative z-10">
-                  <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6 ${feature.bgColor} group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon className={`h-10 w-10 bg-gradient-to-br ${feature.color} text-transparent bg-clip-text`} />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              <div key={index} className="flex gap-4 items-start p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:shadow-sm transition-all group">
+                <div className={`flex-shrink-0 w-14 h-14 rounded-xl ${feature.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                  <feature.icon className="h-7 w-7 text-emerald-600" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-gray-800 mb-1">{feature.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Featured Products - Enhanced with modern layout */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="h-px w-12 bg-gradient-to-r from-transparent to-emerald-500" />
-              <span className="text-emerald-600 font-semibold tracking-widest uppercase text-sm">
-                Best Sellers
-              </span>
-              <div className="h-px w-12 bg-gradient-to-l from-transparent to-emerald-500" />
-            </div>
-            <h2 className="text-5xl font-playfair font-bold mb-6">
-              Trending This Month
-            </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-              Discover our most effective supplements, loved by thousands for visible results
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {loading.trending
-              ? Array(5)
-                  .fill()
-                  .map((_, i) => <SkeletonProductCard key={i} />)
-              : trendingProducts
-                  .slice(0, 10)
-                  .map((product) => (
-                    <div key={product._id} className="hover:-translate-y-2 transition-transform duration-300">
-                      <ProductCard product={product} />
-                    </div>
-                  ))}
-          </div>
-          
-          <div className="text-center mt-16">
-            <Link to="/shop">
-              <button className="group relative overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 text-white h-12 px-10 rounded-full text-lg font-semibold flex items-center gap-3 mx-auto transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30">
-                <span>View All Supplements</span>
-                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-2" />
-              </button>
+      {/* ── Wellness Collections ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="bg-white rounded shadow-sm p-4">
+          <div className="flex items-center justify-between border-b-2 border-emerald-500 pb-2 mb-4">
+            <h2 className="text-lg font-bold text-gray-800">Wellness Collections</h2>
+            <Link to="/shop?view=collections" className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:text-emerald-700">
+              See All <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* Featured Collections - Enhanced with hover effects */}
-      <section className="py-24 bg-gradient-to-b from-white to-emerald-50/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-playfair font-bold mb-6">
-              Wellness Collections
-            </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Curated supplement bundles designed for specific health goals and optimal results
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {loading.collections
-              ? Array(4)
-                  .fill()
-                  .map((_, i) => <SkeletonCollectionCard key={i} />)
+              ? Array(4).fill().map((_, i) => <SkeletonCollectionCard key={i} />)
               : featuredCollections.slice(0, 4).map((collection) => (
                   <Link
                     key={collection.id}
                     to="/shop"
-                    className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                    className="group relative overflow-hidden rounded-lg block border border-gray-100"
                   >
-                    <div className="relative h-80 overflow-hidden">
+                    <div className="relative h-56 overflow-hidden">
                       <img
                         src={collection.image}
                         alt={collection.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/80 via-emerald-900/30 to-transparent" />
-                      
-                      {/* Hover overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-emerald-600/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      
-                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                        <h3 className="text-2xl font-bold mb-2 group-hover:translate-y-0 translate-y-2 transition-transform duration-300">
-                          {collection.name}
-                        </h3>
-                        <p className="text-emerald-200 group-hover:translate-y-0 translate-y-2 transition-transform duration-500">
-                          {collection.itemCount} premium supplements
-                        </p>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                        <h3 className="text-base font-bold">{collection.name}</h3>
+                        <p className="text-emerald-200 text-xs mt-0.5">{collection.itemCount} premium supplements</p>
                       </div>
                     </div>
                   </Link>
                 ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Special Offers - Enhanced with modern design */}
-      <section className="py-24 relative overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-teal-50" />
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white to-transparent" />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="relative">
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-emerald-300/20 rounded-full blur-xl" />
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-teal-300/10 rounded-full blur-xl" />
-              
-              <div className="relative bg-white rounded-3xl shadow-2xl p-8 md:p-12">
-                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                  <Zap className="h-4 w-4" />
-                  Limited Time Offer
-                </span>
-                
-                <h2 className="text-4xl font-playfair font-bold mb-6 leading-tight">
-                  Special Wellness Offers
-                </h2>
-                
-                <div className="space-y-4 mb-8">
-                  {[
-                    "Up to 40% off on immune support supplements",
-                    "Free shipping on orders over ₵50,000",
-                    "Extra 15% off for subscription orders",
-                    "Free wellness guide with every purchase"
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-4 group">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500 mt-2 group-hover:scale-150 transition-transform" />
-                      <span className="text-lg group-hover:text-emerald-600 transition-colors">{item}</span>
-                    </div>
-                  ))}
+      {/* ── Special Offers ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="grid lg:grid-cols-[300px_1fr] gap-3">
+          {/* Promo card */}
+          <div className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded shadow-sm p-6 text-white flex flex-col justify-center">
+            <span className="inline-flex items-center gap-1.5 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4 w-fit">
+              <Zap className="h-3.5 w-3.5" /> Limited Time Offer
+            </span>
+            <h2 className="text-2xl font-playfair font-bold mb-4 leading-tight">Special Wellness Offers</h2>
+            <div className="space-y-2.5 mb-6">
+              {[
+                "Up to 40% off on immune support supplements",
+                "Free shipping on orders over ₵50,000",
+                "Extra 15% off for subscription orders",
+                "Free wellness guide with every purchase",
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-2.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-300 mt-1.5 flex-shrink-0" />
+                  <span className="text-sm leading-relaxed">{item}</span>
                 </div>
-                
-                <Link to="/shop">
-                  <button className="group relative overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 text-white h-12 px-8 rounded-full text-lg font-semibold flex items-center gap-3 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30">
-                    <span>Shop Wellness Deals</span>
-                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-2" />
-                  </button>
-                </Link>
-              </div>
+              ))}
             </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              {loading.trending
-                ? Array(4)
-                    .fill()
-                    .map((_, i) => (
-                      <div key={i} className="col-span-1">
-                        <SkeletonProductCard />
-                      </div>
-                    ))
-                : trendingProducts
-                    .slice(0, 4)
-                    .map((product) => (
-                      <div key={product._id} className="hover:-translate-y-2 transition-transform duration-300">
-                        <ProductCard product={product} />
-                      </div>
-                    ))}
+            <Link to="/shop" className="inline-flex items-center gap-2 bg-white text-emerald-700 font-bold px-6 py-2.5 rounded-full text-sm hover:bg-emerald-50 transition-colors w-fit">
+              Shop Wellness Deals <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          {/* Products grid */}
+          <div className="bg-white rounded shadow-sm p-4">
+            <div className="flex items-center justify-between border-b-2 border-emerald-500 pb-2 mb-4">
+              <h2 className="text-lg font-bold text-gray-800">What's Hot This Week 🔥</h2>
+              <Link to="/shop?sort=hot" className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:text-emerald-700">
+                See All <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {loading.hot
+                ? Array(4).fill().map((_, i) => <SkeletonProductCard key={i} />)
+                : hotProducts.slice(0, 8).map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))}
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Testimonials - Enhanced with beautiful cards */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="h-px w-12 bg-gradient-to-r from-transparent to-emerald-500" />
-              <span className="text-emerald-600 font-semibold tracking-widest uppercase text-sm">
-                Success Stories
-              </span>
-              <div className="h-px w-12 bg-gradient-to-l from-transparent to-emerald-500" />
-            </div>
-            <h2 className="text-5xl font-playfair font-bold mb-6">
-              Health Transformations
-            </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Real results and testimonials from our wellness community members
-            </p>
+      {/* ── Shop by Category ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="bg-white rounded shadow-sm p-4">
+          <div className="flex items-center justify-between border-b-2 border-emerald-500 pb-2 mb-4">
+            <h2 className="text-lg font-bold text-gray-800">Shop By Category</h2>
+            <Link to="/shop" className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:text-emerald-700">
+              See All <ChevronRight className="h-4 w-4" />
+            </Link>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {loading.categories
+              ? Array(6).fill().map((_, i) => <SkeletonCategoryCard key={i} />)
+              : categories.map((cat, i) => (
+                  <Link
+                    key={i}
+                    to={`/shop?category=${encodeURIComponent(cat.name.toLowerCase())}`}
+                    className="group flex flex-col items-center gap-2 p-3 rounded-lg border border-gray-100 hover:border-emerald-300 hover:shadow-sm transition-all text-center"
+                  >
+                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-100 group-hover:border-emerald-300 transition-colors">
+                      <img src={cat.image} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+                    <span className="text-xs font-semibold text-gray-700 group-hover:text-emerald-700 leading-tight">{cat.name}</span>
+                    <span className="text-[11px] text-gray-400">{cat.count} items</span>
+                  </Link>
+                ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Testimonials ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="bg-white rounded shadow-sm p-6">
+          <div className="text-center mb-6">
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <div className="h-px w-10 bg-gradient-to-r from-transparent to-emerald-500" />
+              <span className="text-emerald-600 font-bold tracking-widest uppercase text-xs">Success Stories</span>
+              <div className="h-px w-10 bg-gradient-to-l from-transparent to-emerald-500" />
+            </div>
+            <h2 className="text-2xl font-playfair font-bold">Health Transformations</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
             {testimonials.map((testimonial) => (
-              <div
-                key={testimonial.id}
-                className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl p-8 border border-emerald-100 hover:border-emerald-200 transition-all duration-500 hover:-translate-y-2"
-              >
-                {/* Quote icon */}
-                <Quote className="absolute top-6 right-6 h-8 w-8 text-emerald-500/20 group-hover:text-emerald-500/30 transition-colors" />
-                
-                {/* Rating */}
-                <div className="flex gap-1 mb-6">
+              <div key={testimonial.id} className="relative bg-gray-50 rounded-xl p-6 border border-gray-100 hover:border-emerald-200 hover:shadow-sm transition-all group">
+                <Quote className="absolute top-5 right-5 h-6 w-6 text-emerald-200 group-hover:text-emerald-300 transition-colors" />
+                <div className="flex gap-0.5 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-5 w-5 fill-amber-400 text-amber-400"
-                    />
+                    <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                
-                {/* Comment */}
-                <p className="text-gray-700 italic text-lg mb-8 leading-relaxed">
-                  "{testimonial.comment}"
-                </p>
-                
-                {/* User info */}
-                <div className="flex items-center gap-4">
+                <p className="text-gray-600 italic text-sm mb-5 leading-relaxed">"{testimonial.comment}"</p>
+                <div className="flex items-center gap-3">
                   <img
                     src={testimonial.avatar}
                     alt={testimonial.name}
-                    className="w-14 h-14 rounded-full object-cover ring-4 ring-emerald-100 group-hover:ring-emerald-200 transition-all"
+                    className="w-12 h-12 rounded-full object-cover ring-2 ring-emerald-100"
                   />
                   <div>
-                    <p className="font-bold text-lg">{testimonial.name}</p>
-                    <p className="text-emerald-600 text-sm font-medium">{testimonial.role}</p>
+                    <p className="font-bold text-sm text-gray-800">{testimonial.name}</p>
+                    <p className="text-emerald-600 text-xs">{testimonial.role}</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Wellness Tips - Enhanced with gradient overlays */}
-      <section className="py-24 bg-gradient-to-b from-white to-emerald-50/50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-playfair font-bold mb-6">
-              Wellness Education
-            </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Expert insights and research-backed articles on supplementation and holistic health
-            </p>
+      {/* ── Wellness Education / Style Inspiration ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="bg-white rounded shadow-sm p-4">
+          <div className="flex items-center justify-between border-b-2 border-emerald-500 pb-2 mb-4">
+            <h2 className="text-lg font-bold text-gray-800">Wellness Education</h2>
+            <Link to="/blog" className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:text-emerald-700">
+              See All <ChevronRight className="h-4 w-4" />
+            </Link>
           </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {loading.inspiration
-              ? Array(4)
-                  .fill()
-                  .map((_, i) => <SkeletonProductCard key={i} />)
+              ? Array(4).fill().map((_, i) => <SkeletonProductCard key={i} />)
               : inspirationProducts.slice(0, 4).map((product) => (
                   <Link
                     key={product._id}
                     to={`/product/${product._id}`}
-                    className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                    className="group relative overflow-hidden rounded-lg block border border-gray-100"
                   >
-                    <div className="relative h-80 overflow-hidden">
+                    <div className="relative h-52 overflow-hidden">
                       <img
                         src={product.images?.[0] || "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=300&fit=crop"}
                         alt={product.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
-                      
-                      {/* Gradient overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/80 via-emerald-900/20 to-transparent" />
-                      
-                      {/* Content */}
-                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium mb-4">
-                          <Brain className="h-3 w-3" />
-                          <span>5 min read</span>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                        <div className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-medium mb-2">
+                          <Brain className="h-3 w-3" /> 5 min read
                         </div>
-                        <h3 className="text-xl font-bold mb-2 group-hover:translate-y-0 translate-y-2 transition-transform duration-300">
-                          {product.title}
-                        </h3>
-                        <p className="text-emerald-200 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <h3 className="text-sm font-bold leading-tight line-clamp-2">{product.title}</h3>
+                        <p className="text-emerald-200 text-xs mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           Read article →
                         </p>
                       </div>
@@ -573,122 +739,80 @@ const Home = () => {
                   </Link>
                 ))}
           </div>
-          
-          <div className="text-center mt-16">
-            <button className="group relative overflow-hidden border-2 border-emerald-500 text-emerald-500 hover:text-white h-12 px-10 rounded-full text-lg font-semibold flex items-center gap-3 mx-auto transition-all duration-300 hover:bg-emerald-500">
-              <span>View All Articles</span>
-              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-2" />
+          <div className="text-center mt-4">
+            <button className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white px-8 py-2 rounded-full font-semibold text-sm transition-all flex items-center gap-2 mx-auto">
+              View All Articles <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Newsletter - Enhanced with modern design */}
-      <section className="py-24 relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-teal-50" />
-        
-        {/* Decorative elements */}
-        <div className="absolute top-20 right-20 w-64 h-64 bg-emerald-200/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-teal-200/10 rounded-full blur-3xl" />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 md:p-12 border border-white/20">
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mb-6">
-                  <Mail className="h-8 w-8 text-white" />
-                </div>
-                
-                <h2 className="text-4xl font-playfair font-bold mb-4">
-                  Wellness Newsletter
-                </h2>
-                <p className="text-gray-600 text-lg mb-8">
-                  Subscribe for health tips, supplement guides, and exclusive wellness offers
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <div className="flex-1 relative">
-                    <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                    <input
-                      type="email"
-                      placeholder="Enter your email address"
-                      className="w-full pl-12 pr-4 py-4 rounded-full border border-gray-200 bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
-                    />
-                  </div>
-                  <button className="group relative overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-400 hover:to-teal-400 h-12 px-8 rounded-full text-lg font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/30 flex items-center justify-center">
-                    <span>Subscribe</span>
-                    <ArrowRight className="h-5 w-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-                  </button>
-                </div>
-                
-                <p className="text-sm text-gray-500 mb-8">
-                  Join 50,000+ wellness enthusiasts. Unsubscribe anytime.
-                </p>
-                
-                <div className="flex justify-center gap-6">
-                  {[
-                    { icon: Instagram, color: "hover:text-pink-600" },
-                    { icon: Facebook, color: "hover:text-blue-600" },
-                    { icon: Twitter, color: "hover:text-sky-500" },
-                  ].map((social, i) => (
-                    <a
-                      key={i}
-                      href="#"
-                      className="group relative w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-gray-600 hover:bg-emerald-100 transition-all duration-300 hover:-translate-y-1"
-                    >
-                      <social.icon className="h-5 w-5" />
-                    </a>
-                  ))}
-                </div>
+      {/* ── Newsletter ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2">
+        <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 rounded shadow-sm p-10">
+          <div className="max-w-xl mx-auto text-center text-white">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-white/20 rounded-full mb-4">
+              <Mail className="h-7 w-7 text-white" />
+            </div>
+            <h2 className="text-3xl font-playfair font-bold mb-2">Wellness Newsletter</h2>
+            <p className="text-emerald-100 text-sm mb-6">Subscribe for health tips, supplement guides, and exclusive wellness offers</p>
+            <div className="flex flex-col sm:flex-row gap-3 mb-4">
+              <div className="flex-1 relative">
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <input
+                  type="email"
+                  placeholder="Enter your email address"
+                  className="w-full pl-10 pr-4 py-3 rounded-full border-0 text-sm outline-none focus:ring-2 focus:ring-white/50"
+                />
               </div>
+              <button className="bg-white text-emerald-700 hover:bg-emerald-50 px-7 py-3 rounded-full font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                Subscribe <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+            <p className="text-emerald-200 text-xs mb-5">Join 50,000+ wellness enthusiasts. Unsubscribe anytime.</p>
+            <div className="flex justify-center gap-4">
+              {[
+                { Icon: Instagram, hover: "hover:text-pink-300" },
+                { Icon: Facebook, hover: "hover:text-blue-300" },
+                { Icon: Twitter, hover: "hover:text-sky-300" },
+              ].map(({ Icon, hover }, i) => (
+                <a key={i} href="#" className={`w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white ${hover} hover:-translate-y-1 transition-all`}>
+                  <Icon className="h-5 w-5" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* CTA Section - Enhanced with gradient */}
-      <section className="py-24 relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700" />
-        
-        {/* Floating elements */}
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white/10 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white/10 to-transparent" />
-        <div className="absolute top-1/4 left-1/4 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-teal-400/10 rounded-full blur-2xl" />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full mb-8">
-              <Sparkles className="h-5 w-5" />
-              <span className="font-semibold">Join Our Wellness Network</span>
+      {/* ── Seller CTA ── */}
+      <div className="max-w-screen-xl mx-auto px-4 py-2 pb-6">
+        <div className="relative overflow-hidden rounded shadow-sm bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 py-14 px-8 text-center text-white">
+          <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[radial-gradient(circle_at_20%_50%,white_0%,transparent_50%),radial-gradient(circle_at_80%_50%,white_0%,transparent_50%)]" />
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-5 py-2 rounded-full text-sm font-semibold mb-5">
+              <Sparkles className="h-4 w-4" /> Join Our Wellness Network
             </div>
-            
-            <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-playfair font-bold mb-4">
               Share Wellness,
               <span className="block text-emerald-100">Earn Rewards</span>
             </h2>
-            
-            <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg mb-8 opacity-90 max-w-xl mx-auto">
               Join our network of wellness advocates and help others achieve better health while earning meaningful rewards
             </p>
-            
             <Link
               to="/seller-signup"
-              className="group inline-flex items-center gap-3 bg-white text-emerald-700 hover:bg-emerald-50 h-14 px-10 rounded-full text-lg font-semibold transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+              className="inline-flex items-center gap-3 bg-white text-emerald-700 hover:bg-emerald-50 px-9 py-3.5 rounded-full text-base font-bold transition-all hover:shadow-xl hover:-translate-y-1"
             >
-              <Leaf className="h-6 w-6" />
-              <span>Become a Wellness Partner</span>
-              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-2" />
+              <Leaf className="h-5 w-5" />
+              Become a Wellness Partner
+              <ArrowRight className="h-5 w-5" />
             </Link>
-            
-            <p className="mt-8 text-emerald-200 text-sm">
-              No upfront costs • Training provided • Dedicated support
-            </p>
+            <p className="mt-6 text-emerald-200 text-sm">No upfront costs · Training provided · Dedicated support</p>
           </div>
         </div>
-      </section>
+      </div>
+
     </div>
   );
 };
