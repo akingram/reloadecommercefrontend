@@ -333,65 +333,30 @@ const Home = () => {
         </div>
 
         {/* Center: Hero banner */}
-        <div className="relative rounded overflow-hidden min-h-[360px] cursor-pointer" onClick={() => setBannerIndex((bannerIndex + 1) % 3)}>
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${heroImage})` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/85 via-teal-900/70 to-emerald-900/80" />
+
+       
+        
+          {/* Center: Product carousel */}
+        <div className="bg-white rounded shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+            <h2 className="text-base font-black text-gray-900">Featured Products</h2>
+            <Link to="/shop" className="text-sm text-emerald-600 font-semibold flex items-center gap-1 hover:underline">
+              See All <ChevronRight className="h-4 w-4" />
+            </Link>
           </div>
-
-          <div className="relative z-10 p-10 h-full flex flex-col justify-center text-white">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-semibold mb-5 border border-white/20 w-fit">
-              <Leaf className="h-3.5 w-3.5" />
-              Premium Natural Supplements
-              <Sparkles className="h-3 w-3 opacity-70" />
+          {loading.trending ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="w-8 h-8 border-4 border-gray-200 border-t-emerald-600 rounded-full animate-spin" />
             </div>
-
-            <h1 className="text-5xl font-playfair font-bold leading-tight mb-4">
-              Elevate Your
-              <span className="block bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-200 bg-clip-text text-transparent">
-                Wellness Journey
-              </span>
-            </h1>
-
-            <p className="text-base font-light mb-6 max-w-md leading-relaxed opacity-90">
-              Scientifically-backed natural supplements for optimal health and vitality
-            </p>
-
-            <div className="flex gap-4 flex-wrap">
-              <Link
-                to="/shop"
-                className="bg-emerald-500 hover:bg-emerald-400 text-white px-7 py-2.5 rounded-full font-semibold text-sm flex items-center gap-2 transition-all hover:shadow-lg hover:shadow-emerald-500/30"
-              >
-                Explore Supplements <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to={dashboardLink}
-                className="bg-transparent text-white border border-white/50 hover:border-white hover:bg-white/10 px-7 py-2.5 rounded-full font-semibold text-sm flex items-center gap-2 transition-all"
-              >
-                Start Selling <ArrowRight className="h-4 w-4" />
-              </Link>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-gray-100">
+              {trendingProducts.slice(0, 6).map((product) => (
+                <div key={product._id} className="bg-white p-3 hover:shadow-md transition-shadow">
+                  <ProductCard product={product} />
+                </div>
+              ))}
             </div>
-
-            <div className="flex gap-5 mt-8 text-xs text-white/80">
-              <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-emerald-300" /> Certified Quality</span>
-              <span className="flex items-center gap-1.5"><Heart className="h-3.5 w-3.5 text-emerald-300" /> 100% Natural</span>
-              <span className="flex items-center gap-1.5"><Truck className="h-3.5 w-3.5 text-emerald-300" /> Free Shipping</span>
-              <span className="flex items-center gap-1.5"><Star className="h-3.5 w-3.5 text-emerald-300" /> 5-Star Rated</span>
-            </div>
-          </div>
-
-          {/* Dot indicators */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
-            {[0, 1, 2].map((i) => (
-              <button
-                key={i}
-                onClick={(e) => { e.stopPropagation(); setBannerIndex(i); }}
-                className={`w-2 h-2 rounded-full transition-all ${i === bannerIndex ? "bg-white w-5" : "bg-white/50"}`}
-              />
-            ))}
-          </div>
+          )}
         </div>
 
         {/* Right: Quick action cards */}
