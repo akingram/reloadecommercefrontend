@@ -316,11 +316,11 @@ const Home = () => {
       </header>
 
       {/* ── Hero Section: Sidebar + Banner + Right Panel ── */}
-      <div className="max-w-screen-xl mx-auto px-4 pt-4 pb-2 grid grid-cols-[220px_1fr_180px] gap-3">
+    <div className="max-w-screen-xl mx-auto px-4 pt-4 pb-2 grid grid-cols-1 lg:grid-cols-[220px_1fr_180px] gap-3">
 
         {/* Left: Category sidebar */}
-        <div className="bg-white rounded shadow-sm overflow-hidden self-start">
-          {navCategories.map((cat, i) => (
+        <div className="bg-white rounded shadow-sm overflow-hidden self-start hidden lg:block">
+  {navCategories.map((cat, i) => (
             <Link
               key={i}
               to={`/shop?category=${encodeURIComponent(cat.name)}`}
@@ -395,8 +395,8 @@ const Home = () => {
         </div>
 
         {/* Right: Quick action cards */}
-        <div className="flex flex-col gap-2">
-          {[
+      <div className="flex flex-col gap-2 hidden lg:flex">
+  {[
             { icon: "📞", title: "CALL / WHATSAPP", detail: "0302740642", to: "/contact", bg: "bg-green-50 border-green-100" },
             { icon: "🏪", title: "SELL ON ELVANA", detail: "Make more money", to: dashboardLink, bg: "bg-blue-50 border-blue-100" },
             { icon: "📦", title: "TRACK YOUR ORDER", detail: "Stay up to date", to: "/orders", bg: "bg-amber-50 border-amber-100" },
@@ -591,7 +591,7 @@ const Home = () => {
 
       {/* ── Special Offers ── */}
       <div className="max-w-screen-xl mx-auto px-4 py-2">
-        <div className="grid lg:grid-cols-[300px_1fr] gap-3">
+       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-3">
           {/* Promo card */}
           <div className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded shadow-sm p-6 text-white flex flex-col justify-center">
             <span className="inline-flex items-center gap-1.5 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4 w-fit">
