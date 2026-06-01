@@ -386,7 +386,7 @@ const Home = () => {
 
           {/* Seller CTA */}
           <Link
-            to="/seller-signup"
+            to="/Shop"
             className="bg-emerald-600 hover:bg-emerald-700 rounded p-3 text-white text-center block transition-colors"
           >
             <div className="text-[10px] font-semibold mb-1">ELVANA FORCE</div>
