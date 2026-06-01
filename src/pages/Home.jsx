@@ -139,7 +139,7 @@ const Home = () => {
     { label: "Call to Order", icon: "📞", href: "tel:0302740642" },
     { label: "Donkomi Sales", icon: "🔥", href: "/shop?sale=donkomi" },
     { label: "Recommended For You", icon: "⭐", href: "/shop?recommended=true" },
-    { label: "Make Extra Cash", icon: "💰", href: "/seller-signup" },
+    { label: "Save Extra Cash buy now", icon: "💰", href: "/shop" },
   ];
 
   // Flash sale timer
@@ -243,8 +243,8 @@ const Home = () => {
       {/* ── Top announcement bar ── */}
       <div className="bg-emerald-700 text-white text-xs py-1.5 px-4 flex justify-between items-center">
         <div className="flex gap-6 items-center">
-          <span className="font-semibold">14 Years with you · Powered by <strong>Hikers</strong></span>
-          <span>SAMSUNG · Icona London</span>
+          {/* <span className="font-semibold">14 Years with you · Powered by <strong>Hikers</strong></span> */}
+          {/* <span>SAMSUNG · Icona London</span> */}
         </div>
         <div className="flex gap-6 items-center">
           <span className="font-bold text-sm">UP TO 70% OFF</span>
@@ -259,7 +259,7 @@ const Home = () => {
       <div className="bg-white border-b border-gray-200 text-xs py-1 px-6 flex justify-between items-center text-gray-500">
         <div className="flex gap-4 items-center">
           <Link to={dashboardLink} className="text-emerald-600 font-semibold hover:text-emerald-700 flex items-center gap-1">
-            ⊕ Sell on Elvana
+            ⊕ Buy on Elvana
           </Link>
         </div>
         <div className="flex gap-4">
@@ -363,7 +363,7 @@ const Home = () => {
       <div className="flex flex-col gap-2 hidden lg:flex">
   {[
             { icon: "📞", title: "CALL / WHATSAPP", detail: "0302740642", to: "/contact", bg: "bg-green-50 border-green-100" },
-            { icon: "🏪", title: "SELL ON ELVANA", detail: "Make more money", to: dashboardLink, bg: "bg-blue-50 border-blue-100" },
+            { icon: "🏪", title: "BUY ON ELVANA", detail: "Make more money", to: "/shop", bg: "bg-blue-50 border-blue-100" },
             { icon: "📦", title: "TRACK YOUR ORDER", detail: "Stay up to date", to: "/orders", bg: "bg-amber-50 border-amber-100" },
           ].map((item, i) => (
             <Link key={i} to={item.to} className={`${item.bg} border rounded p-3 flex items-center gap-2.5 hover:shadow-sm transition-shadow`}>
