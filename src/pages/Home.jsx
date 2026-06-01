@@ -117,13 +117,13 @@ const Home = () => {
     { name: "reload Products for Women", icon: "📱" },
     { name: "reload Products for Kids", icon: "💊" },
     { name:"reload Specialty", icon: "🏠" },
-    { name: "Appliances", icon: "🔌" },
-    { name: "Electronics", icon: "💻" },
-    { name: "Computing", icon: "🖥️" },
-    { name: "Fashion", icon: "👗" },
-    { name: "Sporting Goods", icon: "⚽" },
-    { name: "Baby Products", icon: "🍼" },
-    { name: "Gaming", icon: "🎮" },
+    // { name: "Appliances", icon: "🔌" },
+    // { name: "Electronics", icon: "💻" },
+    // { name: "Computing", icon: "🖥️" },
+    // { name: "Fashion", icon: "👗" },
+    // { name: "Sporting Goods", icon: "⚽" },
+    // { name: "Baby Products", icon: "🍼" },
+    // { name: "Gaming", icon: "🎮" },
     { name: "Other categories", icon: "•••" },
   ];
 
@@ -390,8 +390,8 @@ const Home = () => {
             className="bg-emerald-600 hover:bg-emerald-700 rounded p-3 text-white text-center block transition-colors"
           >
             <div className="text-[10px] font-semibold mb-1">ELVANA FORCE</div>
-            <div className="text-xl font-black leading-tight">MAKE EXTRA<br />CASH</div>
-            <div className="mt-2 font-bold text-sm">JOIN NOW →</div>
+            <div className="text-xl font-black leading-tight">SAVE EXTRA<br />CASH</div>
+            <div className="mt-2 font-bold text-sm">BUY NOW →</div>
           </Link>
         </div>
       </div>
