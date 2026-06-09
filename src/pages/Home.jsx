@@ -31,7 +31,7 @@ import {
   Bell,
 } from "lucide-react";
 import heroImage from "../assets/images/homebg.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   getAllProduct,
   getWhatsHotThisWeek,
@@ -41,21 +41,12 @@ import {
 } from "../service/userApi";
 import { useSelector } from "react-redux";
 
-const CATEGORY_LIST = [
-  "reload Products for Men",
-  "reload Products for Women",
-  "reload Products for Kids",
-  "reload Specialty",
-  "reload Platinum Plus",
-];
-
 const Home = () => {
   const [trendingProducts, setTrendingProducts] = useState([]);
   const [hotProducts, setHotProducts] = useState([]);
   const [featuredCollections, setFeaturedCollections] = useState([]);
   const [categories, setCategories] = useState([]);
   const [inspirationProducts, setInspirationProducts] = useState([]);
-  const [categoryProductMap, setCategoryProductMap] = useState({});
   const [loading, setLoading] = useState({
     trending: true,
     hot: true,
@@ -65,18 +56,10 @@ const Home = () => {
   });
   const [flashSeconds, setFlashSeconds] = useState(8 * 3600 + 5 * 60 + 32);
   const [bannerIndex, setBannerIndex] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const seller = useSelector((state) => state.seller?.seller || null);
   const dashboardLink = seller?.seller?._id ? "/seller" : "/seller-login";
-
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
 
   const features = [
     {
@@ -133,9 +116,22 @@ const Home = () => {
     { name: "reload Products for Men", icon: "🛒" },
     { name: "reload Products for Women", icon: "📱" },
     { name: "reload Products for Kids", icon: "💊" },
-    { name: "reload Specialty", icon: "🏠" },
+    { name:"reload Specialty", icon: "🏠" },
+    // { name: "Appliances", icon: "🔌" },
+    // { name: "Electronics", icon: "💻" },
+    // { name: "Computing", icon: "🖥️" },
+    // { name: "Fashion", icon: "👗" },
+    // { name: "Sporting Goods", icon: "⚽" },
+    // { name: "Baby Products", icon: "🍼" },
+    // { name: "Gaming", icon: "🎮" },
     { name: "Other categories", icon: "•••" },
   ];
+
+  
+    
+    
+    
+    
 
   const quickLinks = [
     { label: "Anniversary Sale", icon: "🎉", href: "/shop?promo=anniversary" },
@@ -146,6 +142,7 @@ const Home = () => {
     { label: "Save Extra Cash buy now", icon: "💰", href: "/shop" },
   ];
 
+  // Flash sale timer
   useEffect(() => {
     const id = setInterval(() => {
       setFlashSeconds((s) => (s > 0 ? s - 1 : 0));
@@ -153,6 +150,7 @@ const Home = () => {
     return () => clearInterval(id);
   }, []);
 
+  // Banner auto-rotate
   useEffect(() => {
     const id = setInterval(() => setBannerIndex((i) => (i + 1) % 3), 5000);
     return () => clearInterval(id);
@@ -162,21 +160,27 @@ const Home = () => {
   const m = String(Math.floor((flashSeconds % 3600) / 60)).padStart(2, "0");
   const s = String(flashSeconds % 60).padStart(2, "0");
 
-  const tagProduct = (p) => ({
-    ...p,
-    isNew: (new Date() - new Date(p.createdAt)) / (1000 * 60 * 60 * 24) < 7,
-    isSale: p.originalPrice && p.price < p.originalPrice,
-  });
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const trending = await getAllProduct();
-        setTrendingProducts(trending.map(tagProduct));
+        setTrendingProducts(
+          trending.map((p) => ({
+            ...p,
+            isNew: (new Date() - new Date(p.createdAt)) / (1000 * 60 * 60 * 24) < 7,
+            isSale: p.originalPrice && p.price < p.originalPrice,
+          }))
+        );
         setLoading((prev) => ({ ...prev, trending: false }));
 
         const hot = await getWhatsHotThisWeek();
-        setHotProducts(hot.map(tagProduct));
+        setHotProducts(
+          hot.map((p) => ({
+            ...p,
+            isNew: (new Date() - new Date(p.createdAt)) / (1000 * 60 * 60 * 24) < 7,
+            isSale: p.originalPrice && p.price < p.originalPrice,
+          }))
+        );
         setLoading((prev) => ({ ...prev, hot: false }));
 
         const collections = await getFeaturedCollections();
@@ -186,37 +190,48 @@ const Home = () => {
             name: p.title,
             image: p.images?.[0] || "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=400&h=300&fit=crop",
             itemCount: Math.floor(Math.random() * 20) + 10,
-            product: p,
           }))
         );
         setLoading((prev) => ({ ...prev, collections: false }));
 
-        const categoryResults = await Promise.all(
-          CATEGORY_LIST.map(async (cat) => {
+        const categoryList = [
+          "reload Products for Men",
+    "reload Products for Women",
+    "reload Products for Kids",
+    "reload Specialty",
+    "reload Platinum Plus",
+        ];
+        const categoryData = await Promise.all(
+          categoryList.map(async (cat) => {
             const products = await getShopByCategory(cat.toLowerCase());
-            return { cat, products: products.map(tagProduct) };
+            return {
+              name: cat,
+              image: products[0]?.images?.[0] || "https://images.unsplash.com/photo-1582053433976-0c1ee0d1c01f?w=300&h=200&fit=crop",
+              count: products.length,
+            };
           })
         );
-
-        const map = {};
-        const categoryData = categoryResults.map(({ cat, products }) => {
-          map[cat] = products;
-          return {
-            name: cat,
-            image: products[0]?.images?.[0] || "https://images.unsplash.com/photo-1582053433976-0c1ee0d1c01f?w=300&h=200&fit=crop",
-            count: products.length,
-          };
-        });
         setCategories(categoryData);
-        setCategoryProductMap(map);
         setLoading((prev) => ({ ...prev, categories: false }));
 
         const inspiration = await getStyleInspiration();
-        setInspirationProducts(inspiration.map(tagProduct));
+        setInspirationProducts(
+          inspiration.map((p) => ({
+            ...p,
+            isNew: (new Date() - new Date(p.createdAt)) / (1000 * 60 * 60 * 24) < 7,
+            isSale: p.originalPrice && p.price < p.originalPrice,
+          }))
+        );
         setLoading((prev) => ({ ...prev, inspiration: false }));
       } catch (error) {
         console.error("Failed to fetch data:", error.message);
-        setLoading({ trending: false, hot: false, collections: false, categories: false, inspiration: false });
+        setLoading({
+          trending: false,
+          hot: false,
+          collections: false,
+          categories: false,
+          inspiration: false,
+        });
       }
     };
     fetchData();
@@ -227,7 +242,10 @@ const Home = () => {
 
       {/* ── Top announcement bar ── */}
       <div className="bg-emerald-700 text-white text-xs py-1.5 px-4 flex justify-between items-center">
-        <div className="flex gap-6 items-center"></div>
+        <div className="flex gap-6 items-center">
+          {/* <span className="font-semibold">14 Years with you · Powered by <strong>Hikers</strong></span> */}
+          {/* <span>SAMSUNG · Icona London</span> */}
+        </div>
         <div className="flex gap-6 items-center">
           <span className="font-bold text-sm">UP TO 70% OFF</span>
           <span>CALL TO ORDER: <strong>030 274 0642</strong></span>
@@ -254,10 +272,13 @@ const Home = () => {
       {/* ── Main Navbar ── */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-screen-xl mx-auto flex items-center gap-4 px-4 py-3">
+          {/* Logo */}
           <Link to="/" className="flex items-center gap-1 flex-shrink-0">
             <span className="text-2xl font-black text-emerald-600 tracking-tight">ELVANA</span>
             <Sparkles className="h-5 w-5 text-emerald-500" />
           </Link>
+
+          {/* Search */}
           <div className="flex-1 flex relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2">
               <Search className="h-4 w-4 text-gray-400" />
@@ -266,17 +287,13 @@ const Home = () => {
               type="text"
               placeholder="Search products, brands and categories"
               className="w-full pl-9 pr-4 h-10 border border-gray-300 rounded-l text-sm outline-none focus:border-emerald-500 transition-colors"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
-            <button
-              onClick={handleSearch}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 rounded-r font-semibold text-sm transition-colors"
-            >
+            <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 rounded-r font-semibold text-sm transition-colors">
               Search
             </button>
           </div>
+
+          {/* Nav icons */}
           <div className="flex gap-5 items-center flex-shrink-0">
             <Link to="/account" className="flex flex-col items-center text-gray-600 hover:text-emerald-600 transition-colors text-xs gap-0.5">
               <User className="h-5 w-5" />
@@ -295,14 +312,15 @@ const Home = () => {
             </Link>
           </div>
         </div>
+        
       </header>
 
-      {/* ── Hero Section: Sidebar + Featured Products + Right Panel ── */}
-      <div className="max-w-screen-xl mx-auto px-4 pt-4 pb-2 grid grid-cols-1 lg:grid-cols-[220px_1fr_180px] gap-3">
+      {/* ── Hero Section: Sidebar + Banner + Right Panel ── */}
+    <div className="max-w-screen-xl mx-auto px-4 pt-4 pb-2 grid grid-cols-1 lg:grid-cols-[220px_1fr_180px] gap-3">
 
         {/* Left: Category sidebar */}
         <div className="bg-white rounded shadow-sm overflow-hidden self-start hidden lg:block">
-          {navCategories.map((cat, i) => (
+  {navCategories.map((cat, i) => (
             <Link
               key={i}
               to={`/shop?category=${encodeURIComponent(cat.name)}`}
@@ -314,7 +332,11 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Center: Featured Products */}
+        {/* Center: Hero banner */}
+
+       
+        
+          {/* Center: Product carousel */}
         <div className="bg-white rounded shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <h2 className="text-base font-black text-gray-900">Featured Products</h2>
@@ -338,8 +360,8 @@ const Home = () => {
         </div>
 
         {/* Right: Quick action cards */}
-        <div className="flex flex-col gap-2 hidden lg:flex">
-          {[
+      <div className="flex flex-col gap-2 hidden lg:flex">
+  {[
             { icon: "📞", title: "CALL / WHATSAPP", detail: "0302740642", to: "/contact", bg: "bg-green-50 border-green-100" },
             { icon: "🏪", title: "BUY ON ELVANA", detail: "Make more money", to: "/shop", bg: "bg-blue-50 border-blue-100" },
             { icon: "📦", title: "TRACK YOUR ORDER", detail: "Stay up to date", to: "/orders", bg: "bg-amber-50 border-amber-100" },
@@ -353,14 +375,16 @@ const Home = () => {
             </Link>
           ))}
 
+          {/* Anniversary promo */}
           <div className="bg-emerald-600 rounded p-3 text-white text-center">
-            <div className="text-[10px] font-semibold mb-1">ELVANA</div>
-            <div className="text-3xl font-black leading-none">1</div>
+            <div className="text-[10px] font-semibold mb-1">ELVANA ✦</div>
+            <div className="text-3xl font-black leading-none">14</div>
             <div className="text-[11px]">Years with you</div>
             <div className="text-[10px] opacity-80 mt-0.5">COMING SOON</div>
             <div className="text-base font-bold mt-1">Hikers</div>
           </div>
 
+          {/* Seller CTA */}
           <Link
             to="/Shop"
             className="bg-emerald-600 hover:bg-emerald-700 rounded p-3 text-white text-center block transition-colors"
@@ -378,9 +402,14 @@ const Home = () => {
           {[
             { name: "reload Products for Men", color: "#FF6B35" },
             { name: "reload Products for Women", color: "#00A651" },
-            { name: "reload Products for Kids", color: "#F7941D" },
-            { name: "reload Specialty", color: "#009FE3" },
+            { name:  "reload Products for Kids", color: "#F7941D" },
+            { name:  "reload Specialty", color: "#009FE3" },
             { name: "reload Platinum Plus", color: "#6B4FBB" },
+            // { name: "Joint Support", color: "#E5111B" },
+         
+    
+   
+   
           ].map((cat, i) => (
             <Link
               key={i}
@@ -414,14 +443,14 @@ const Home = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
             {loading.trending
               ? Array(6).fill().map((_, i) => <SkeletonProductCard key={i} />)
-              : trendingProducts.slice(6, 12).map((product) => (
+              : trendingProducts.slice(0, 6).map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
           </div>
         </div>
       </div>
 
-      {/* ── Quick links strip ── */}
+      {/* ── Quick links strip (Jumia-style tiles) ── */}
       <div className="max-w-screen-xl mx-auto px-4 py-2">
         <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
           {quickLinks.map((item, i) => (
@@ -437,117 +466,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* ── Men's Products ── */}
-      {(!loading.categories && categoryProductMap["reload Products for Men"]?.length > 0) && (
-        <div className="max-w-screen-xl mx-auto px-4 py-2">
-          <div className="bg-white rounded shadow-sm p-4">
-            <div className="flex items-center justify-between border-b-2 border-orange-400 pb-2 mb-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🛒</span>
-                <h2 className="text-lg font-bold text-gray-800">Products for Men</h2>
-              </div>
-              <Link to={`/shop?category=${encodeURIComponent("reload products for men")}`} className="text-orange-500 text-sm font-semibold flex items-center gap-1 hover:text-orange-600">
-                See All <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-              {categoryProductMap["reload Products for Men"].slice(0, 6).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Women's Products ── */}
-      {(!loading.categories && categoryProductMap["reload Products for Women"]?.length > 0) && (
-        <div className="max-w-screen-xl mx-auto px-4 py-2">
-          <div className="bg-white rounded shadow-sm p-4">
-            <div className="flex items-center justify-between border-b-2 border-green-500 pb-2 mb-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">📱</span>
-                <h2 className="text-lg font-bold text-gray-800">Products for Women</h2>
-              </div>
-              <Link to={`/shop?category=${encodeURIComponent("reload products for women")}`} className="text-green-600 text-sm font-semibold flex items-center gap-1 hover:text-green-700">
-                See All <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-              {categoryProductMap["reload Products for Women"].slice(0, 6).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Kids Products ── */}
-      {(!loading.categories && categoryProductMap["reload Products for Kids"]?.length > 0) && (
-        <div className="max-w-screen-xl mx-auto px-4 py-2">
-          <div className="bg-white rounded shadow-sm p-4">
-            <div className="flex items-center justify-between border-b-2 border-amber-400 pb-2 mb-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">💊</span>
-                <h2 className="text-lg font-bold text-gray-800">Products for Kids</h2>
-              </div>
-              <Link to={`/shop?category=${encodeURIComponent("reload products for kids")}`} className="text-amber-500 text-sm font-semibold flex items-center gap-1 hover:text-amber-600">
-                See All <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-              {categoryProductMap["reload Products for Kids"].slice(0, 6).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Specialty Products ── */}
-      {(!loading.categories && categoryProductMap["reload Specialty"]?.length > 0) && (
-        <div className="max-w-screen-xl mx-auto px-4 py-2">
-          <div className="bg-white rounded shadow-sm p-4">
-            <div className="flex items-center justify-between border-b-2 border-sky-400 pb-2 mb-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">🏠</span>
-                <h2 className="text-lg font-bold text-gray-800">Specialty Products</h2>
-              </div>
-              <Link to={`/shop?category=${encodeURIComponent("reload specialty")}`} className="text-sky-500 text-sm font-semibold flex items-center gap-1 hover:text-sky-600">
-                See All <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-              {categoryProductMap["reload Specialty"].slice(0, 6).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Platinum Plus ── */}
-      {(!loading.categories && categoryProductMap["reload Platinum Plus"]?.length > 0) && (
-        <div className="max-w-screen-xl mx-auto px-4 py-2">
-          <div className="bg-white rounded shadow-sm p-4">
-            <div className="flex items-center justify-between border-b-2 border-purple-500 pb-2 mb-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xl">⭐</span>
-                <h2 className="text-lg font-bold text-gray-800">Platinum Plus</h2>
-              </div>
-              <Link to={`/shop?category=${encodeURIComponent("reload platinum plus")}`} className="text-purple-600 text-sm font-semibold flex items-center gap-1 hover:text-purple-700">
-                See All <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-              {categoryProductMap["reload Platinum Plus"].slice(0, 6).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── Trending This Month ── */}
+      {/* ── Trending This Month (Best Sellers) ── */}
       <div className="max-w-screen-xl mx-auto px-4 py-2">
         <div className="bg-white rounded shadow-sm p-4">
           <div className="flex items-center justify-between border-b-2 border-emerald-500 pb-2 mb-4">
@@ -562,7 +481,7 @@ const Home = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
             {loading.trending
               ? Array(6).fill().map((_, i) => <SkeletonProductCard key={i} />)
-              : trendingProducts.slice(12, 22).map((product) => (
+              : trendingProducts.slice(0, 10).map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
           </div>
@@ -632,20 +551,13 @@ const Home = () => {
                   </Link>
                 ))}
           </div>
-          {/* Products from collections */}
-          {!loading.collections && featuredCollections.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3 mt-4 pt-4 border-t border-gray-100">
-              {featuredCollections.slice(0, 6).map((col) =>
-                col.product ? <ProductCard key={col.id} product={col.product} /> : null
-              )}
-            </div>
-          )}
         </div>
       </div>
 
-      {/* ── Special Offers + What's Hot ── */}
+      {/* ── Special Offers ── */}
       <div className="max-w-screen-xl mx-auto px-4 py-2">
-        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-3">
+       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-3">
+          {/* Promo card */}
           <div className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded shadow-sm p-6 text-white flex flex-col justify-center">
             <span className="inline-flex items-center gap-1.5 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4 w-fit">
               <Zap className="h-3.5 w-3.5" /> Limited Time Offer
@@ -669,6 +581,7 @@ const Home = () => {
             </Link>
           </div>
 
+          {/* Products grid */}
           <div className="bg-white rounded shadow-sm p-4">
             <div className="flex items-center justify-between border-b-2 border-emerald-500 pb-2 mb-4">
               <h2 className="text-lg font-bold text-gray-800">What's Hot This Week 🔥</h2>
@@ -686,25 +599,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {/* ── More Hot Products ── */}
-      {!loading.hot && hotProducts.length > 8 && (
-        <div className="max-w-screen-xl mx-auto px-4 py-2">
-          <div className="bg-white rounded shadow-sm p-4">
-            <div className="flex items-center justify-between border-b-2 border-red-400 pb-2 mb-4">
-              <h2 className="text-lg font-bold text-gray-800">More Hot Picks 🔥</h2>
-              <Link to="/shop?sort=hot" className="text-red-500 text-sm font-semibold flex items-center gap-1 hover:text-red-600">
-                See All <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-              {hotProducts.slice(8, 14).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ── Shop by Category ── */}
       <div className="max-w-screen-xl mx-auto px-4 py-2">
@@ -732,31 +626,6 @@ const Home = () => {
                   </Link>
                 ))}
           </div>
-
-          {/* Products per category */}
-          {!loading.categories && (
-            <div className="mt-6 space-y-6">
-              {CATEGORY_LIST.map((catName) => {
-                const products = categoryProductMap[catName];
-                if (!products || products.length === 0) return null;
-                return (
-                  <div key={catName}>
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-sm font-bold text-gray-700">{catName}</h3>
-                      <Link to={`/shop?category=${encodeURIComponent(catName.toLowerCase())}`} className="text-emerald-600 text-xs font-semibold hover:underline">
-                        View all
-                      </Link>
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-                      {products.slice(0, 6).map((product) => (
-                        <ProductCard key={product._id} product={product} />
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
         </div>
       </div>
 
@@ -836,16 +705,6 @@ const Home = () => {
                   </Link>
                 ))}
           </div>
-
-          {/* Remaining inspiration products as cards */}
-          {!loading.inspiration && inspirationProducts.length > 4 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3 mt-4 pt-4 border-t border-gray-100">
-              {inspirationProducts.slice(4, 10).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          )}
-
           <div className="text-center mt-4">
             <button className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white px-8 py-2 rounded-full font-semibold text-sm transition-all flex items-center gap-2 mx-auto">
               View All Articles <ArrowRight className="h-4 w-4" />
@@ -853,25 +712,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {/* ── You May Also Like ── */}
-      {!loading.trending && trendingProducts.length > 22 && (
-        <div className="max-w-screen-xl mx-auto px-4 py-2">
-          <div className="bg-white rounded shadow-sm p-4">
-            <div className="flex items-center justify-between border-b-2 border-emerald-500 pb-2 mb-4">
-              <h2 className="text-lg font-bold text-gray-800">You May Also Like</h2>
-              <Link to="/shop" className="text-emerald-600 text-sm font-semibold flex items-center gap-1 hover:text-emerald-700">
-                See All <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-              {trendingProducts.slice(22, 34).map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ── Newsletter ── */}
       <div className="max-w-screen-xl mx-auto px-4 py-2">
