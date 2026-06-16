@@ -294,7 +294,7 @@ const Home = () => {
           </div>
 
           {/* Nav icons */}
-          <div className="flex gap-5 items-center flex-shrink-0">
+          {/* <div className="flex gap-5 items-center flex-shrink-0">
             <Link to="/account" className="flex flex-col items-center text-gray-600 hover:text-emerald-600 transition-colors text-xs gap-0.5">
               <User className="h-5 w-5" />
               <span className="flex items-center gap-0.5">Account <ChevronDown className="h-3 w-3" /></span>
@@ -310,7 +310,7 @@ const Home = () => {
               </div>
               <span>Cart</span>
             </Link>
-          </div>
+          </div> */}
         </div>
         
       </header>
