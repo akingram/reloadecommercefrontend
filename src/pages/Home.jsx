@@ -117,21 +117,8 @@ const Home = () => {
     { name: "reload Products for Women", icon: "📱" },
     { name: "reload Products for Kids", icon: "💊" },
     { name:"reload Specialty", icon: "🏠" },
-    // { name: "Appliances", icon: "🔌" },
-    // { name: "Electronics", icon: "💻" },
-    // { name: "Computing", icon: "🖥️" },
-    // { name: "Fashion", icon: "👗" },
-    // { name: "Sporting Goods", icon: "⚽" },
-    // { name: "Baby Products", icon: "🍼" },
-    // { name: "Gaming", icon: "🎮" },
     { name: "Other categories", icon: "•••" },
   ];
-
-  
-    
-    
-    
-    
 
   const quickLinks = [
     { label: "Anniversary Sale", icon: "🎉", href: "/shop?promo=anniversary" },
@@ -196,10 +183,10 @@ const Home = () => {
 
         const categoryList = [
           "reload Products for Men",
-    "reload Products for Women",
-    "reload Products for Kids",
-    "reload Specialty",
-    "reload Platinum Plus",
+          "reload Products for Women",
+          "reload Products for Kids",
+          "reload Specialty",
+          "reload Platinum Plus",
         ];
         const categoryData = await Promise.all(
           categoryList.map(async (cat) => {
@@ -242,13 +229,10 @@ const Home = () => {
 
       {/* ── Top announcement bar ── */}
       <div className="bg-emerald-700 text-white text-xs py-1.5 px-4 flex justify-between items-center">
-        <div className="flex gap-6 items-center">
-          {/* <span className="font-semibold">14 Years with you · Powered by <strong>Hikers</strong></span> */}
-          {/* <span>SAMSUNG · Icona London</span> */}
-        </div>
+        <div className="flex gap-6 items-center" />
         <div className="flex gap-6 items-center">
           <span className="font-bold text-sm">UP TO 70% OFF</span>
-          <span>CALL TO ORDER: <strong>030 274 0642</strong></span>
+          <span className="hidden sm:inline">CALL TO ORDER: <strong>030 274 0642</strong></span>
           <Link to="/shop" className="text-white font-bold border border-white px-3 py-0.5 rounded text-xs hover:bg-white hover:text-emerald-700 transition-colors">
             DISCOVER
           </Link>
@@ -264,8 +248,8 @@ const Home = () => {
         </div>
         <div className="flex gap-4">
           <span>ELVANA ○</span>
-          <span>⊙PAY</span>
-          <span>⊙DELIVERY</span>
+          <span className="hidden sm:inline">⊙PAY</span>
+          <span className="hidden sm:inline">⊙DELIVERY</span>
         </div>
       </div>
 
@@ -278,8 +262,8 @@ const Home = () => {
             <Sparkles className="h-5 w-5 text-emerald-500" />
           </Link>
 
-          {/* Search */}
-          <div className="flex-1 flex relative">
+          {/* Search — hidden on mobile, visible on md+ */}
+          <div className="hidden md:flex flex-1 relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2">
               <Search className="h-4 w-4 text-gray-400" />
             </div>
@@ -292,35 +276,32 @@ const Home = () => {
               Search
             </button>
           </div>
-
-          {/* Nav icons */}
-          {/* <div className="flex gap-5 items-center flex-shrink-0">
-            <Link to="/account" className="flex flex-col items-center text-gray-600 hover:text-emerald-600 transition-colors text-xs gap-0.5">
-              <User className="h-5 w-5" />
-              <span className="flex items-center gap-0.5">Account <ChevronDown className="h-3 w-3" /></span>
-            </Link>
-            <Link to="/help" className="flex flex-col items-center text-gray-600 hover:text-emerald-600 transition-colors text-xs gap-0.5">
-              <Bell className="h-5 w-5" />
-              <span className="flex items-center gap-0.5">Help <ChevronDown className="h-3 w-3" /></span>
-            </Link>
-            <Link to="/cart" className="flex flex-col items-center text-gray-600 hover:text-emerald-600 transition-colors text-xs gap-0.5 relative">
-              <div className="relative">
-                <ShoppingCart className="h-5 w-5" />
-                <span className="absolute -top-1.5 -right-1.5 bg-emerald-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-              </div>
-              <span>Cart</span>
-            </Link>
-          </div> */}
         </div>
-        
+
+        {/* ── Mobile search bar — shown below logo row on small screens ── */}
+        <div className="md:hidden px-4 pb-3">
+          <div className="flex relative">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <Search className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search products, brands…"
+              className="w-full pl-9 pr-4 h-10 border border-gray-300 rounded-l text-sm outline-none focus:border-emerald-500 transition-colors"
+            />
+            <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 rounded-r font-semibold text-sm transition-colors">
+              <Search className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
       </header>
 
       {/* ── Hero Section: Sidebar + Banner + Right Panel ── */}
-    <div className="max-w-screen-xl mx-auto px-4 pt-4 pb-2 grid grid-cols-1 lg:grid-cols-[220px_1fr_180px] gap-3">
+      <div className="max-w-screen-xl mx-auto px-4 pt-4 pb-2 grid grid-cols-1 lg:grid-cols-[220px_1fr_180px] gap-3">
 
         {/* Left: Category sidebar */}
         <div className="bg-white rounded shadow-sm overflow-hidden self-start hidden lg:block">
-  {navCategories.map((cat, i) => (
+          {navCategories.map((cat, i) => (
             <Link
               key={i}
               to={`/shop?category=${encodeURIComponent(cat.name)}`}
@@ -332,11 +313,7 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Center: Hero banner */}
-
-       
-        
-          {/* Center: Product carousel */}
+        {/* Center: Product carousel */}
         <div className="bg-white rounded shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <h2 className="text-base font-black text-gray-900">Featured Products</h2>
@@ -360,8 +337,8 @@ const Home = () => {
         </div>
 
         {/* Right: Quick action cards */}
-      <div className="flex flex-col gap-2 hidden lg:flex">
-  {[
+        <div className="flex-col gap-2 hidden lg:flex">
+          {[
             { icon: "📞", title: "CALL / WHATSAPP", detail: "0302740642", to: "/contact", bg: "bg-green-50 border-green-100" },
             { icon: "🏪", title: "BUY ON ELVANA", detail: "Make more money", to: "/shop", bg: "bg-blue-50 border-blue-100" },
             { icon: "📦", title: "TRACK YOUR ORDER", detail: "Stay up to date", to: "/orders", bg: "bg-amber-50 border-amber-100" },
@@ -402,14 +379,9 @@ const Home = () => {
           {[
             { name: "reload Products for Men", color: "#FF6B35" },
             { name: "reload Products for Women", color: "#00A651" },
-            { name:  "reload Products for Kids", color: "#F7941D" },
-            { name:  "reload Specialty", color: "#009FE3" },
+            { name: "reload Products for Kids", color: "#F7941D" },
+            { name: "reload Specialty", color: "#009FE3" },
             { name: "reload Platinum Plus", color: "#6B4FBB" },
-            // { name: "Joint Support", color: "#E5111B" },
-         
-    
-   
-   
           ].map((cat, i) => (
             <Link
               key={i}
@@ -556,7 +528,7 @@ const Home = () => {
 
       {/* ── Special Offers ── */}
       <div className="max-w-screen-xl mx-auto px-4 py-2">
-       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-3">
+        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-3">
           {/* Promo card */}
           <div className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded shadow-sm p-6 text-white flex flex-col justify-center">
             <span className="inline-flex items-center gap-1.5 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4 w-fit">
